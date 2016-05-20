@@ -1,4 +1,4 @@
-package org.kitegacc.informationtracker;
+package org.kitegacc.information_tracker;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

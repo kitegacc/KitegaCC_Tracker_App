@@ -1,5 +1,6 @@
-package org.kitegacc.informationtracker;
+package org.kitegacc.information_tracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,5 +49,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void login(View view) {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void test(View view) {
+        Intent intent = new Intent(MainActivity.this, CommunityHomePage.class);
+        startActivity(intent);
     }
 }

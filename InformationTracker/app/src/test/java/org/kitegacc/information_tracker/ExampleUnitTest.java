@@ -1,4 +1,4 @@
-package org.kitegacc.informationtracker;
+package org.kitegacc.information_tracker;
 
 import org.junit.Test;
 
