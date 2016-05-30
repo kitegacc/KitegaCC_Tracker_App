@@ -18,4 +18,9 @@
     </string>
     <string name="login_page_button">Login</string>
     <string name="test_page_button">Test Button</string>
+
+    <!-- Strings related to Community Home Page -->
+    <string name="app_community_homepage">Community Home Page</string>
+    <string name="welcome_community_homepage">Welcome to the Community Homepage!</string>
+
 </resources>

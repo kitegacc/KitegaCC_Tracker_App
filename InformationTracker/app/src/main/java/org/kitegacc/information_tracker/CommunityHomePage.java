@@ -8,6 +8,6 @@ public class CommunityHomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_community_home_page);
+        setContentView(R.layout.activity_communityhomepage);
     }
 }
