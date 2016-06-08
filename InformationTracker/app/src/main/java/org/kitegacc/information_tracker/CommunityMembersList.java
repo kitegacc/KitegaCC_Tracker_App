@@ -72,14 +72,18 @@ public class CommunityMembersList extends ListActivity {
                 String mid = ((TextView) view.findViewById(R.id.member_id_list_item)).getText()
                         .toString();
 
-                // Starting new intent
-                /*Intent in = new Intent(getApplicationContext(),
-                        EditProductActivity.class);
-                // sending pid to next activity
-                in.putExtra(TAG_MID, mid);
-
-                // starting new activity and expecting some response back
-                startActivityForResult(in, 100);*/
+                Bundle extras = getIntent().getExtras();
+                String click_action = "";
+                if (extras != null) {
+                    click_action = extras.getString("CLICK_ACTION");
+                }
+                if(click_action.equals("MEMBER_PAGE")) {
+                    Intent intent = new Intent(getApplicationContext(), MemberDetailActivity.class);
+                    // send member_id to the member detail page
+                    intent.putExtra(TAG_MID, mid);
+                    // starting new activity and expecting some response back
+                    startActivityForResult(intent, 100);
+                }
             }
         });
 

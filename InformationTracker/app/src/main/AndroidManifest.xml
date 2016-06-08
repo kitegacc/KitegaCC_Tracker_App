@@ -35,6 +35,10 @@
         <activity
             android:name=".CommunityMembersList"
             android:label="Community Members" />
+        <activity
+            android:name=".MemberDetailActivity"
+            android:label="@string/title_activity_member_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

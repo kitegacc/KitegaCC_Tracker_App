@@ -22,5 +22,6 @@
     <!-- Strings related to Community Home Page -->
     <string name="app_community_homepage">Community Home Page</string>
     <string name="welcome_community_homepage">Welcome to the Community Homepage!</string>
+    <string name="title_activity_member_detail">MemberDetailActivity</string>
 
 </resources>
