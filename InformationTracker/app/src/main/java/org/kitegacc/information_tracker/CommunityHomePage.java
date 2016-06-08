@@ -1,9 +1,11 @@
 package org.kitegacc.information_tracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class CommunityHomePage extends AppCompatActivity {
 
@@ -33,5 +35,15 @@ public class CommunityHomePage extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void viewMembers(View view) {
+        Intent intent = new Intent(CommunityHomePage.this, CommunityMembersList.class);
+        startActivity(intent);
+    }
+
+    public void createMember(View view) {
+        // Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        // startActivity(intent);
     }
 }

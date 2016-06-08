@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="org.kitegacc.information_tracker.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,11 +27,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.kitegacc.information_tracker.CommunityHomePage"
-            android:label="@string/app_community_homepage"></activity>
+            android:name=".CommunityHomePage"
+            android:label="@string/app_community_homepage" />
         <activity
-            android:name="org.kitegacc.information_tracker.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".CommunityMembersList"
+            android:label="Community Members" />
     </application>
 
 </manifest>
