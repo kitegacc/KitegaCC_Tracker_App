@@ -6,13 +6,27 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class CommunityHomePage extends AppCompatActivity {
+
+    public static int COMMUNITY_ID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_communityhomepage);
+
+        try {
+            Bundle extras = getIntent().getExtras();
+            COMMUNITY_ID = Integer.parseInt(extras.getString("community_id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        TextView com_info_text = (TextView) findViewById(R.id.community_info_text);
+        String com_display_text = "community_id: " + COMMUNITY_ID;
+        com_info_text.setText(com_display_text);
     }
 
     @Override

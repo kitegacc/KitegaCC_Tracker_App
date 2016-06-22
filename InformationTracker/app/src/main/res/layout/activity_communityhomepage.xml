@@ -9,10 +9,19 @@
     tools:context="org.kitegacc.information_tracker.CommunityHomePage">
 
     <TextView
+        android:id="@+id/community_welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="@string/welcome_community_homepage"/>
+
+    <TextView
+        android:id="@+id/community_info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/community_welcome_text"
+        android:text="ERROR: data not populating"
+        android:textStyle="bold"/>
 
     <!--  Button to create a new member screen -->
     <Button android:id="@+id/btnCreateMember"
