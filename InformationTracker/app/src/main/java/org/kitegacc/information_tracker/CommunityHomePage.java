@@ -54,6 +54,7 @@ public class CommunityHomePage extends AppCompatActivity {
     public void viewMembers(View view) {
         Intent intent = new Intent(CommunityHomePage.this, CommunityMembersList.class);
         intent.putExtra("CLICK_ACTION", "MEMBER_PAGE"); // other will be "SELECT_MEMBER"
+        intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
         startActivity(intent);
     }
 

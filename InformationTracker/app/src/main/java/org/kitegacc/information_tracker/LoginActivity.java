@@ -427,6 +427,7 @@ public class LoginActivity extends AppCompatActivity {// implements LoaderCallba
             for(String key : map.keySet()) {
                 intent.putExtra(key, map.get(key));
             }
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
     }

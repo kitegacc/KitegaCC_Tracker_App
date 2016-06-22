@@ -37,7 +37,7 @@ public class CommunityMembersList extends ListActivity {
 
     public static int COMMUNITY_ID = 0;
     // url to get all members list
-    private static String url_all_members = "http://androidapp.davidclemy.org/get_all_community_members.php?community_id=0"; // + COMMUNITY_ID;
+    private static String url_all_members = "http://androidapp.davidclemy.org/get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -51,6 +51,8 @@ public class CommunityMembersList extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_community_members_list);
+
+        COMMUNITY_ID = Integer.parseInt(getIntent().getExtras().getString("community_id"));
 
         // Hashmap for ListView
         membersList = new ArrayList<HashMap<String, String>>();
@@ -129,6 +131,7 @@ public class CommunityMembersList extends ListActivity {
         protected String doInBackground(String... args) {
             // Building Parameters
             HashMap<String, String> params = new HashMap<>();
+            params.put("community_id", Integer.toString(COMMUNITY_ID));
             // getting JSON string from URL
             JSONObject json = jphtr.makeHttpRequest(url_all_members, "GET", params);
 
