@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test(View view) {
-        Intent intent = new Intent(MainActivity.this, CommunityHomePage.class);
+        Intent intent = new Intent(MainActivity.this, CreateFormActivity.class);
+        intent.putExtra("form", "community");
         startActivity(intent);
     }
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Information Tracker</string>
     <string name="action_settings">Settings</string>
-    <string name="welcome_text">Welcome to the Kitega Community Center COREB Information Tracker!  Please login or create an account to continue.</string>
+    <string name="welcome_text">Welcome to the Kitega Community Center COREB Information Tracker!  Please login or create an account for your community to continue.</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

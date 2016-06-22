@@ -26,7 +26,7 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="30dip"
         android:onClick="test"
-        android:text="@string/test_page_button" />
+        android:text="Create Community Account" />
 
     <Button
         android:id="@+id/login_button"
