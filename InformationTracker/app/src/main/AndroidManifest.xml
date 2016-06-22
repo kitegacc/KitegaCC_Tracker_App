@@ -38,7 +38,8 @@
         <activity
             android:name=".MemberDetailActivity"
             android:label="@string/title_activity_member_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreateFormActivity"></activity>
     </application>
 
 </manifest>

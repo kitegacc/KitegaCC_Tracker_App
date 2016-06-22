@@ -59,7 +59,9 @@ public class CommunityHomePage extends AppCompatActivity {
     }
 
     public void createMember(View view) {
-        // Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(CommunityHomePage.this, CreateFormActivity.class);
+        intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
+        intent.putExtra("form", "member");
+        startActivity(intent);
     }
 }

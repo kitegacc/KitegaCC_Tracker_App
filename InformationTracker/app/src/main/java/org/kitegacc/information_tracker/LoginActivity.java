@@ -370,21 +370,27 @@ public class LoginActivity extends AppCompatActivity {// implements LoaderCallba
                         String community_id = c.getString("community_id");
                         String username = c.getString("username");
                         String password = c.getString("password");
+                        String location = c.getString("location");
+                        String com_balance = c.getString("com_balance");
+                        String vicoba_balance = c.getString("vicoba_balance");
 
                         // adding each child node to HashMap key => value
                         map.put("community_id", community_id);
                         map.put("username", username);
                         map.put("password", password);
+                        map.put("location", location);
+                        map.put("com_balance", com_balance);
+                        map.put("vicoba_balance", vicoba_balance);
 
                         // adding HashList to ArrayList
                         // membersList.add(map);
                     }
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-
-                            Toast.makeText(LoginActivity.this, "Success! " + map.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+//                    runOnUiThread(new Runnable() {
+//                        public void run() {
+//
+//                            Toast.makeText(LoginActivity.this, "Success! " + map.toString(), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
                     return true;
                 } /*else {
                     // no products found
