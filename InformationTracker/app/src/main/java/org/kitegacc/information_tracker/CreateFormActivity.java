@@ -55,11 +55,19 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_TYPE = bundle.getString("form");
 
         switch (FORM_TYPE) {
+            case "community":
+                createCommunityAccountForm();
+                break;
             case "member":
                 createMemberForm(bundle);
                 break;
-            case "community":
-                createCommunityAccountForm();
+            case "meeting":
+                break;
+            case "loan":
+                break;
+            case "payment":
+                break;
+            case "business":
                 break;
             default:
                 break;

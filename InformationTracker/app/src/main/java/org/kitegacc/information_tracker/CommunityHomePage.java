@@ -1,6 +1,8 @@
 package org.kitegacc.information_tracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -58,10 +60,72 @@ public class CommunityHomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createMember(View view) {
+    // meeting, member, loan, payment, business
+    public void createNewElement(View view) {
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {" Member "," Meeting "," Loan "," Payment ", " Business "};
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Create a new ...");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+
+                switch(item)
+                {
+                    case 0:
+                        createMember();
+                        break;
+                    case 1:
+                        createMeeting();
+                        break;
+                    case 2:
+                        createLoan();
+                        break;
+                    case 3:
+                        createPayment();
+                        break;
+                    case 4:
+                        createBusiness();
+                        break;
+                    default:
+                        break;
+
+                }
+                dialog.dismiss();
+            }
+        });
+        levelDialog = builder.create();
+        levelDialog.show();
+    }
+
+    public void createMember() {
         Intent intent = new Intent(CommunityHomePage.this, CreateFormActivity.class);
         intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
         intent.putExtra("form", "member");
         startActivity(intent);
+    }
+
+    public void createMeeting() {
+        Intent intent = new Intent(CommunityHomePage.this, CreateFormActivity.class);
+        intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
+        intent.putExtra("form", "meeting");
+        startActivity(intent);
+    }
+
+    public void createLoan() {
+        Intent intent = new Intent(CommunityHomePage.this, CreateFormActivity.class);
+        intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
+        intent.putExtra("form", "loan");
+        startActivity(intent);
+    }
+
+    public void createPayment() {
+
+    }
+
+    public void createBusiness() {
+
     }
 }

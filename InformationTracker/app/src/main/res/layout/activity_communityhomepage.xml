@@ -24,11 +24,20 @@
         android:textStyle="bold"/>
 
     <!--  Button to create a new member screen -->
-    <Button android:id="@+id/btnCreateMember"
+    <!--<Button android:id="@+id/btnCreateMember"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Add New Member"-->
+        <!--android:onClick="createMember"-->
+        <!--android:layout_marginTop="25dip"-->
+        <!--android:layout_alignParentBottom="true"/>-->
+
+    <!--  Button to create a new item -->
+    <Button android:id="@+id/btnCreateNewElement"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Member"
-        android:onClick="createMember"
+        android:text="Create New Item"
+        android:onClick="createNewElement"
         android:layout_marginTop="25dip"
         android:layout_alignParentBottom="true"/>
 
@@ -39,6 +48,6 @@
         android:text="View All Community Members"
         android:onClick="viewMembers"
         android:layout_marginTop="25dip"
-        android:layout_above="@id/btnCreateMember"/>
+        android:layout_above="@id/btnCreateNewElement"/>
 
 </RelativeLayout>
