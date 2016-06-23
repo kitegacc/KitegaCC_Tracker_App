@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -189,7 +190,7 @@ public class CreateFormActivity extends AppCompatActivity {
     /**
      * Background Async Task to Load all members by making HTTP Request
      * */
-    class FormPoster extends AsyncTask<String, String, String> {
+    class FormPoster extends AsyncTask<Void, Void, Boolean> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -207,7 +208,8 @@ public class CreateFormActivity extends AppCompatActivity {
         /**
          * getting All products from url
          * */
-        protected String doInBackground(String... args) {
+        @Override
+        protected Boolean doInBackground(Void... params) {
             // Building Parameters
 //            HashMap<String, String> params = new HashMap<>();
 //            params.put("community_id", Integer.toString(COMMUNITY_ID));
@@ -216,6 +218,15 @@ public class CreateFormActivity extends AppCompatActivity {
 
             // Check your log cat for JSON response
             Log.d("All Products: ", json.toString());
+
+            try {
+                int success = json.getInt("success");
+                if(success == 1) {
+                    return true;
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
 //
 //            try {
 //                // Checking for SUCCESS TAG
@@ -257,13 +268,14 @@ public class CreateFormActivity extends AppCompatActivity {
 //                e.printStackTrace();
 //            }
 
-            return null;
+            return false;
         }
 
         /**
          * After completing background task Dismiss the progress dialog
          * **/
-        protected void onPostExecute(String file_url) {
+        @Override
+        protected void onPostExecute(final Boolean success) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
             // updating UI from Background Thread
@@ -281,6 +293,12 @@ public class CreateFormActivity extends AppCompatActivity {
 //                    setListAdapter(adapter);
 //                }
 //            });
+            if(success) {
+                Toast.makeText(CreateFormActivity.this, "Successfully created " + FORM_TYPE + "!", Toast.LENGTH_LONG).show();
+                finish();
+            } else {
+                Toast.makeText(CreateFormActivity.this, "Error creating " + FORM_TYPE + ".", Toast.LENGTH_LONG).show();
+            }
 
         }
 
