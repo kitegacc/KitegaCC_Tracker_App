@@ -1,13 +1,17 @@
 package org.kitegacc.information_tracker;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.renderscript.ScriptGroup;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
@@ -16,7 +20,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class CreateFormActivity extends AppCompatActivity {
 
@@ -27,6 +34,8 @@ public class CreateFormActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
     private static String url_create_element = "http://androidapp.davidclemy.org/create_element.php";
+    public DatePickerDialog datePickerDialog;
+    public SimpleDateFormat dateFormatter;
 
     private EditText FORM_FIELD_1;
     private EditText FORM_FIELD_2;
@@ -62,6 +71,7 @@ public class CreateFormActivity extends AppCompatActivity {
                 createMemberForm(bundle);
                 break;
             case "meeting":
+                createMeetingForm(bundle);
                 break;
             case "loan":
                 break;
@@ -93,6 +103,39 @@ public class CreateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_7 = (TextInputLayout) findViewById(R.id.create_input_layout_7);
     }
 
+    public void createCommunityAccountForm() {
+        NUM_FIELDS = 5;
+        QUERY_ARGS.put("form_type", "community");
+        setTitle("Create Community Account");
+
+        INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_1.setHint("Location");
+        FORM_FIELD_1.setVisibility(View.VISIBLE);
+        FORM_FIELD_1.setHint("Location");
+
+        INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_2.setHint("Community Cash Balance");
+        FORM_FIELD_2.setVisibility(View.VISIBLE);
+        FORM_FIELD_2.setHint("Community Cash Balance");
+        FORM_FIELD_2.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_3.setHint("Vicoba Balance");
+        FORM_FIELD_3.setVisibility(View.VISIBLE);
+        FORM_FIELD_3.setHint("Vicoba Balance");
+        FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_4.setHint("Username");
+        FORM_FIELD_4.setVisibility(View.VISIBLE);
+        FORM_FIELD_4.setHint("Username");
+
+        INPUT_LAYOUT_5.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_5.setHint("Password");
+        FORM_FIELD_5.setVisibility(View.VISIBLE);
+        FORM_FIELD_5.setHint("Password");
+    }
+
     public void createMemberForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
         NUM_FIELDS = 5;
@@ -109,6 +152,7 @@ public class CreateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_2.setHint("Age");
         FORM_FIELD_2.setVisibility(View.VISIBLE);
         FORM_FIELD_2.setHint("Age");
+        FORM_FIELD_2.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_3.setHint("Emergency Contact");
@@ -126,35 +170,49 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_5.setHint("Kin / Spouse");
     }
 
-    public void createCommunityAccountForm() {
-        NUM_FIELDS = 5;
-        QUERY_ARGS.put("form_type", "community");
-        setTitle("Create Community Account");
+    public void createMeetingForm(Bundle bundle) {
+        COMMUNITY_ID = bundle.getString("community_id");
+        NUM_FIELDS = 3;
+        QUERY_ARGS.put("form_type", "meeting");
+        QUERY_ARGS.put("community_id", COMMUNITY_ID);
+        setTitle("Create Meeting");
 
         INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_1.setHint("Location");
+        INPUT_LAYOUT_1.setHint("Date");
         FORM_FIELD_1.setVisibility(View.VISIBLE);
-        FORM_FIELD_1.setHint("Location");
+        FORM_FIELD_1.setHint("Date");
+        FORM_FIELD_1.setInputType(InputType.TYPE_NULL);
+        Calendar newCalendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                FORM_FIELD_1.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        FORM_FIELD_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
 
         INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_2.setHint("Community Cash Balance");
+        INPUT_LAYOUT_2.setHint("Business Summary");
         FORM_FIELD_2.setVisibility(View.VISIBLE);
-        FORM_FIELD_2.setHint("Community Cash Balance");
+        FORM_FIELD_2.setHint("Business Summary");
+        FORM_FIELD_2.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
 
         INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_3.setHint("Vicoba Balance");
+        INPUT_LAYOUT_3.setHint("Meeting Summary");
         FORM_FIELD_3.setVisibility(View.VISIBLE);
-        FORM_FIELD_3.setHint("Vicoba Balance");
+        FORM_FIELD_3.setHint("Meeting Summary");
+        FORM_FIELD_3.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
 
-        INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_4.setHint("Username");
-        FORM_FIELD_4.setVisibility(View.VISIBLE);
-        FORM_FIELD_4.setHint("Username");
-
-        INPUT_LAYOUT_5.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_5.setHint("Password");
-        FORM_FIELD_5.setVisibility(View.VISIBLE);
-        FORM_FIELD_5.setHint("Password");
     }
 
     public void submitCreateForm(View view) {
@@ -167,6 +225,7 @@ public class CreateFormActivity extends AppCompatActivity {
                     submitCreateCommunityAccountForm();
                     break;
                 case "meeting":
+                    submitCreateMeetingForm();
                     break;
                 case "loan":
                     break;
@@ -193,6 +252,13 @@ public class CreateFormActivity extends AppCompatActivity {
         QUERY_ARGS.put("vicoba_balance", FORM_FIELD_3.getText().toString());
         QUERY_ARGS.put("username", FORM_FIELD_4.getText().toString());
         QUERY_ARGS.put("password", FORM_FIELD_5.getText().toString());
+        new FormPoster().execute();
+    }
+
+    public void submitCreateMeetingForm() {
+        QUERY_ARGS.put("date_time", FORM_FIELD_1.getText().toString());
+        QUERY_ARGS.put("business_summary", FORM_FIELD_2.getText().toString());
+        QUERY_ARGS.put("meeting_summary", FORM_FIELD_3.getText().toString());
         new FormPoster().execute();
     }
 
