@@ -93,12 +93,6 @@ public class CreateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_7 = (TextInputLayout) findViewById(R.id.create_input_layout_7);
     }
 
-    /* Member form needs fields:
-        1) name
-        2) age
-        3) emergency_contact
-        4) residence
-        5) kin_or_spouse */
     public void createMemberForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
         NUM_FIELDS = 5;
@@ -133,8 +127,34 @@ public class CreateFormActivity extends AppCompatActivity {
     }
 
     public void createCommunityAccountForm() {
+        NUM_FIELDS = 5;
         QUERY_ARGS.put("form_type", "community");
         setTitle("Create Community Account");
+
+        INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_1.setHint("Location");
+        FORM_FIELD_1.setVisibility(View.VISIBLE);
+        FORM_FIELD_1.setHint("Location");
+
+        INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_2.setHint("Community Cash Balance");
+        FORM_FIELD_2.setVisibility(View.VISIBLE);
+        FORM_FIELD_2.setHint("Community Cash Balance");
+
+        INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_3.setHint("Vicoba Balance");
+        FORM_FIELD_3.setVisibility(View.VISIBLE);
+        FORM_FIELD_3.setHint("Vicoba Balance");
+
+        INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_4.setHint("Username");
+        FORM_FIELD_4.setVisibility(View.VISIBLE);
+        FORM_FIELD_4.setHint("Username");
+
+        INPUT_LAYOUT_5.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_5.setHint("Password");
+        FORM_FIELD_5.setVisibility(View.VISIBLE);
+        FORM_FIELD_5.setHint("Password");
     }
 
     public void submitCreateForm(View view) {
@@ -168,7 +188,12 @@ public class CreateFormActivity extends AppCompatActivity {
     }
 
     public void submitCreateCommunityAccountForm() {
-
+        QUERY_ARGS.put("location", FORM_FIELD_1.getText().toString());
+        QUERY_ARGS.put("com_balance", FORM_FIELD_2.getText().toString());
+        QUERY_ARGS.put("vicoba_balance", FORM_FIELD_3.getText().toString());
+        QUERY_ARGS.put("username", FORM_FIELD_4.getText().toString());
+        QUERY_ARGS.put("password", FORM_FIELD_5.getText().toString());
+        new FormPoster().execute();
     }
 
     public boolean isFormComplete() {
