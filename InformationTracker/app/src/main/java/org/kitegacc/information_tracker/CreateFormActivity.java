@@ -74,6 +74,7 @@ public class CreateFormActivity extends AppCompatActivity {
                 createMeetingForm(bundle);
                 break;
             case "loan":
+                createLoanForm(bundle);
                 break;
             case "payment":
                 break;
@@ -212,7 +213,50 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_3.setVisibility(View.VISIBLE);
         FORM_FIELD_3.setHint("Meeting Summary");
         FORM_FIELD_3.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+    }
 
+    public void createLoanForm(Bundle bundle) {
+        COMMUNITY_ID = bundle.getString("community_id");
+        NUM_FIELDS = 3;
+        QUERY_ARGS.put("form_type", "loan");
+        QUERY_ARGS.put("community_id", COMMUNITY_ID);
+        setTitle("Create Loan");
+
+        INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_1.setHint("Award Date");
+        FORM_FIELD_1.setVisibility(View.VISIBLE);
+        FORM_FIELD_1.setHint("Award Date");
+        FORM_FIELD_1.setInputType(InputType.TYPE_NULL);
+        Calendar newCalendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                FORM_FIELD_1.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        FORM_FIELD_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
+
+        INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_2.setHint("Loan Amount");
+        FORM_FIELD_2.setVisibility(View.VISIBLE);
+        FORM_FIELD_2.setHint("Loan Amount");
+        FORM_FIELD_2.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_3.setHint("Remaining Balance");
+        FORM_FIELD_3.setVisibility(View.VISIBLE);
+        FORM_FIELD_3.setHint("Remaining Balance");
+        FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
     public void submitCreateForm(View view) {
@@ -228,6 +272,7 @@ public class CreateFormActivity extends AppCompatActivity {
                     submitCreateMeetingForm();
                     break;
                 case "loan":
+                    submitCreateLoanForm();
                     break;
                 case "payment":
                     break;
@@ -259,6 +304,13 @@ public class CreateFormActivity extends AppCompatActivity {
         QUERY_ARGS.put("date_time", FORM_FIELD_1.getText().toString());
         QUERY_ARGS.put("business_summary", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("meeting_summary", FORM_FIELD_3.getText().toString());
+        new FormPoster().execute();
+    }
+
+    public void submitCreateLoanForm() {
+        QUERY_ARGS.put("award_date", FORM_FIELD_1.getText().toString());
+        QUERY_ARGS.put("amount", FORM_FIELD_2.getText().toString());
+        QUERY_ARGS.put("balance", FORM_FIELD_3.getText().toString());
         new FormPoster().execute();
     }
 
