@@ -3,21 +3,16 @@ package org.kitegacc.information_tracker;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.renderscript.ScriptGroup;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -25,7 +20,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class CreateFormActivity extends AppCompatActivity {
+/**
+ * Created by philip on 6/24/16.
+ */
+
+public class UpdateFormActivity extends AppCompatActivity {
 
     private String COMMUNITY_ID;
     private String FORM_TYPE = "";
@@ -33,7 +32,7 @@ public class CreateFormActivity extends AppCompatActivity {
     private HashMap<String, String> QUERY_ARGS;
     private ProgressDialog pDialog;
     JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
-    private static String url_create_element = "http://androidapp.kitegacc.org/create_element.php";
+    private static String url_update_element = "http://androidapp.kitegacc.org/update_element.php";
     public DatePickerDialog datePickerDialog;
     public SimpleDateFormat dateFormatter;
 
@@ -55,7 +54,7 @@ public class CreateFormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_form);
+        setContentView(R.layout.activity_update_form);
 
         attachFormFields();
         QUERY_ARGS = new HashMap<>();
@@ -65,16 +64,16 @@ public class CreateFormActivity extends AppCompatActivity {
 
         switch (FORM_TYPE) {
             case "community":
-                createCommunityAccountForm();
+                updateCommunityAccountForm();
                 break;
             case "member":
-                createMemberForm(bundle);
+                updateMemberForm(bundle);
                 break;
             case "meeting":
-                createMeetingForm(bundle);
+                updateMeetingForm(bundle);
                 break;
             case "loan":
-                createLoanForm(bundle);
+                updateLoanForm(bundle);
                 break;
             case "payment":
                 break;
@@ -104,7 +103,7 @@ public class CreateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_7 = (TextInputLayout) findViewById(R.id.create_input_layout_7);
     }
 
-    public void createCommunityAccountForm() {
+    public void updateCommunityAccountForm() {
         NUM_FIELDS = 5;
         QUERY_ARGS.put("form_type", "community");
         setTitle("Create Community Account");
@@ -137,7 +136,7 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_5.setHint("Password");
     }
 
-    public void createMemberForm(Bundle bundle) {
+    public void updateMemberForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
         NUM_FIELDS = 5;
         QUERY_ARGS.put("form_type", "member");
@@ -171,7 +170,7 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_5.setHint("Kin / Spouse");
     }
 
-    public void createMeetingForm(Bundle bundle) {
+    public void updateMeetingForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
         NUM_FIELDS = 3;
         QUERY_ARGS.put("form_type", "meeting");
@@ -215,7 +214,7 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_3.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
     }
 
-    public void createLoanForm(Bundle bundle) {
+    public void updateLoanForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
         NUM_FIELDS = 3;
         QUERY_ARGS.put("form_type", "loan");
@@ -259,20 +258,20 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
-    public void submitCreateForm(View view) {
+    public void submitUpdateForm(View view) {
         if(isFormComplete()) {
             switch (FORM_TYPE) {
                 case "member":
-                    submitCreateMemberForm();
+                    updateCreateMemberForm();
                     break;
                 case "community":
-                    submitCreateCommunityAccountForm();
+                    updateCreateCommunityAccountForm();
                     break;
                 case "meeting":
-                    submitCreateMeetingForm();
+                    updateCreateMeetingForm();
                     break;
                 case "loan":
-                    submitCreateLoanForm();
+                    updateCreateLoanForm();
                     break;
                 case "payment":
                     break;
@@ -282,7 +281,7 @@ public class CreateFormActivity extends AppCompatActivity {
         }
     }
 
-    public void submitCreateMemberForm() {
+    public void updateCreateMemberForm() {
         QUERY_ARGS.put("name", FORM_FIELD_1.getText().toString());
         QUERY_ARGS.put("age", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("emergency_contact", FORM_FIELD_3.getText().toString());
@@ -291,7 +290,7 @@ public class CreateFormActivity extends AppCompatActivity {
         new FormPoster().execute();
     }
 
-    public void submitCreateCommunityAccountForm() {
+    public void updateCreateCommunityAccountForm() {
         QUERY_ARGS.put("location", FORM_FIELD_1.getText().toString());
         QUERY_ARGS.put("com_balance", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("vicoba_balance", FORM_FIELD_3.getText().toString());
@@ -300,14 +299,14 @@ public class CreateFormActivity extends AppCompatActivity {
         new FormPoster().execute();
     }
 
-    public void submitCreateMeetingForm() {
+    public void updateCreateMeetingForm() {
         QUERY_ARGS.put("date_time", FORM_FIELD_1.getText().toString());
         QUERY_ARGS.put("business_summary", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("meeting_summary", FORM_FIELD_3.getText().toString());
         new FormPoster().execute();
     }
 
-    public void submitCreateLoanForm() {
+    public void updateCreateLoanForm() {
         QUERY_ARGS.put("award_date", FORM_FIELD_1.getText().toString());
         QUERY_ARGS.put("amount", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("balance", FORM_FIELD_3.getText().toString());
@@ -349,7 +348,7 @@ public class CreateFormActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(CreateFormActivity.this);
+            pDialog = new ProgressDialog(UpdateFormActivity.this);
             pDialog.setMessage("Submitting form. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
@@ -365,7 +364,7 @@ public class CreateFormActivity extends AppCompatActivity {
 //            HashMap<String, String> params = new HashMap<>();
 //            params.put("community_id", Integer.toString(COMMUNITY_ID));
 //            // getting JSON string from URL
-            JSONObject json = jphtr.makeHttpRequest(url_create_element, "GET", QUERY_ARGS);
+            JSONObject json = jphtr.makeHttpRequest(url_update_element, "GET", QUERY_ARGS);
 
             // Check your log cat for JSON response
             Log.d("All Products: ", json.toString());
@@ -445,10 +444,10 @@ public class CreateFormActivity extends AppCompatActivity {
 //                }
 //            });
             if(success) {
-                Toast.makeText(CreateFormActivity.this, "Successfully created " + FORM_TYPE + "!", Toast.LENGTH_LONG).show();
+                Toast.makeText(UpdateFormActivity.this, "Successfully updated " + FORM_TYPE + "!", Toast.LENGTH_LONG).show();
                 finish();
             } else {
-                Toast.makeText(CreateFormActivity.this, "Error creating " + FORM_TYPE + ".", Toast.LENGTH_LONG).show();
+                Toast.makeText(UpdateFormActivity.this, "Error updating " + FORM_TYPE + ".", Toast.LENGTH_LONG).show();
             }
 
         }

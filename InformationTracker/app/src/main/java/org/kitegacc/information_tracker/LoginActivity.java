@@ -304,7 +304,7 @@ public class LoginActivity extends AppCompatActivity {// implements LoaderCallba
 
         private final String mUsername;
         private final String mPassword;
-        private String url_login = "http://androidapp.davidclemy.org/community_login.php"; //?username=";
+        private String url_login = "http://androidapp.kitegacc.org/community_login.php"; //?username=";
         // private String url_middle = "&password=";
         private String TAG_SUCCESS = "success";
         private String TAG_COMMUNITY = "community";
@@ -350,10 +350,10 @@ public class LoginActivity extends AppCompatActivity {// implements LoaderCallba
             // getting JSON string from URL
             JSONObject json = jphtr.makeHttpRequest(url_login, "GET", args);
 
-            // Check your log cat for JSON response
-            Log.d("All Products: ", json.toString());
-
             try {
+                // Check your log cat for JSON response
+                Log.d("All Products: ", json.toString());
+
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
 

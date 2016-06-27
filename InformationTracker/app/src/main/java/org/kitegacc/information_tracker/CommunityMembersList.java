@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +20,6 @@ import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CommunityMembersList extends ListActivity {
 
@@ -37,13 +34,14 @@ public class CommunityMembersList extends ListActivity {
 
     public static int COMMUNITY_ID = 0;
     // url to get all members list
-    private static String url_all_members = "http://androidapp.davidclemy.org/get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
+    private static String url_all_members = "http://androidapp.kitegacc.org/get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MEMBERS = "members";
     private static final String TAG_MID = "member_id";
     private static final String TAG_NAME = "name";
+    private static final String VIEW_TYPE = "view_type";
 
     // products JSONArray
     JSONArray members = null;
@@ -80,7 +78,9 @@ public class CommunityMembersList extends ListActivity {
                     click_action = extras.getString("CLICK_ACTION");
                 }
                 if(click_action.equals("MEMBER_PAGE")) {
-                    Intent intent = new Intent(getApplicationContext(), MemberDetailActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ElementDetailActivity.class);
+                    // specify what type of element to retrieve
+                    intent.putExtra(VIEW_TYPE, "member");
                     // send member_id to the member detail page
                     intent.putExtra(TAG_MID, mid);
                     // starting new activity and expecting some response back
