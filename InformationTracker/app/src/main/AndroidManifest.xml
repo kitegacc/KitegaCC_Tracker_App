@@ -33,7 +33,7 @@
             android:name=".LoginActivity"
             android:label="Login" />
         <activity
-            android:name=".CommunityMembersList"
+            android:name=".ListElementsActivity"
             android:label="Community Members" />
         <activity
             android:name=".ElementDetailActivity"

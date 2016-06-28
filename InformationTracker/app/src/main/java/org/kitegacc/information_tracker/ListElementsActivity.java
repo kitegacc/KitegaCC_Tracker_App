@@ -21,7 +21,7 @@ import org.json.simple.parser.JSONParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class CommunityMembersList extends ListActivity {
+public class ListElementsActivity extends ListActivity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -30,33 +30,43 @@ public class CommunityMembersList extends ListActivity {
     JSONParser jParser = new JSONParser();
     JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
 
-    ArrayList<HashMap<String, String>> membersList;
+    ArrayList<HashMap<String, String>> elementsList;
 
     public static int COMMUNITY_ID = 0;
     // url to get all members list
     private static String url_all_members = "http://androidapp.kitegacc.org/get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
 
     // JSON Node names
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MEMBERS = "members";
-    private static final String TAG_MID = "member_id";
-    private static final String TAG_NAME = "name";
-    private static final String VIEW_TYPE = "view_type";
+    private String TAG_SUCCESS = "success";
+    private String TAG_MEMBERS = "members";
+    private String ELEMENT_ID = "";
+    private String ELEMENT_DISPLAY = "element_display";
+    private String VIEW_TYPE = "view_type";
+    private String LIST_TYPE = "";
 
     // products JSONArray
-    JSONArray members = null;
+    JSONArray elements = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.all_community_members_list);
+        setContentView(R.layout.elements_list);
 
         COMMUNITY_ID = Integer.parseInt(getIntent().getExtras().getString("community_id"));
+        LIST_TYPE = getIntent().getExtras().getString("LIST_TYPE");
+
+        switch (LIST_TYPE) {
+            case "community_members":
+                ELEMENT_ID = "member_id";
+                break;
+            default:
+                break;
+        }
 
         // Hashmap for ListView
-        membersList = new ArrayList<HashMap<String, String>>();
+        elementsList = new ArrayList<HashMap<String, String>>();
 
         // Loading products in Background Thread
-        new LoadAllProducts().execute();
+        new LoadElements().execute();
 
         // Get listview
         ListView lv = getListView();
@@ -68,24 +78,30 @@ public class CommunityMembersList extends ListActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), ElementDetailActivity.class);
+
                 // getting values from selected ListItem
-                String mid = ((TextView) view.findViewById(R.id.member_id_list_item)).getText()
+                String element_id = ((TextView) view.findViewById(R.id.element_id_list_item)).getText()
                         .toString();
 
+                // send element_id to the element detail page
+                intent.putExtra(ELEMENT_ID, element_id);
+
                 Bundle extras = getIntent().getExtras();
-                String click_action = "";
-                if (extras != null) {
-                    click_action = extras.getString("CLICK_ACTION");
+                String click_action = extras.getString("CLICK_ACTION");
+
+                // specify what type of element to retrieve
+                switch (click_action) {
+                    case "MEMBER_PAGE":
+                        intent.putExtra(VIEW_TYPE, "member");
+                        break;
+                    default:
+                        break;
                 }
-                if(click_action.equals("MEMBER_PAGE")) {
-                    Intent intent = new Intent(getApplicationContext(), ElementDetailActivity.class);
-                    // specify what type of element to retrieve
-                    intent.putExtra(VIEW_TYPE, "member");
-                    // send member_id to the member detail page
-                    intent.putExtra(TAG_MID, mid);
-                    // starting new activity and expecting some response back
-                    startActivityForResult(intent, 100);
-                }
+
+                // starting new activity and expecting some response back
+                startActivityForResult(intent, 100);
             }
         });
 
@@ -110,7 +126,7 @@ public class CommunityMembersList extends ListActivity {
     /**
      * Background Async Task to Load all members by making HTTP Request
      * */
-    class LoadAllProducts extends AsyncTask<String, String, String> {
+    class LoadElements extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -118,15 +134,15 @@ public class CommunityMembersList extends ListActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(CommunityMembersList.this);
-            pDialog.setMessage("Loading members. Please wait...");
+            pDialog = new ProgressDialog(ListElementsActivity.this);
+            pDialog.setMessage("Loading elements. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
         }
 
         /**
-         * getting All products from url
+         * getting All elements from url
          * */
         protected String doInBackground(String... args) {
             // Building Parameters
@@ -136,7 +152,7 @@ public class CommunityMembersList extends ListActivity {
             JSONObject json = jphtr.makeHttpRequest(url_all_members, "GET", params);
 
             // Check your log cat for JSON response
-            Log.d("All Products: ", json.toString());
+            Log.d("All Elements: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
@@ -145,25 +161,25 @@ public class CommunityMembersList extends ListActivity {
                 if (success == 1) {
                     // products found
                     // Getting Array of Products
-                    members = json.getJSONArray(TAG_MEMBERS);
+                    elements = json.getJSONArray(TAG_MEMBERS);
 
                     // looping through All Products
-                    for (int i = 0; i < members.length(); i++) {
-                        JSONObject c = members.getJSONObject(i);
+                    for (int i = 0; i < elements.length(); i++) {
+                        JSONObject c = elements.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id = c.getString(TAG_MID);
-                        String name = c.getString(TAG_NAME);
+                        String id = c.getString(ELEMENT_ID);
+                        String name = c.getString("name");
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // adding each child node to HashMap key => value
-                        map.put(TAG_MID, id);
-                        map.put(TAG_NAME, name);
+                        map.put(ELEMENT_ID, id);
+                        map.put(ELEMENT_DISPLAY, name);
 
                         // adding HashList to ArrayList
-                        membersList.add(map);
+                        elementsList.add(map);
                     }
                 } /*else {
                     // no products found
@@ -194,10 +210,10 @@ public class CommunityMembersList extends ListActivity {
                      * Updating parsed JSON data into ListView
                      * */
                     ListAdapter adapter = new SimpleAdapter(
-                            CommunityMembersList.this, membersList,
-                            R.layout.member_list_item, new String[] { TAG_MID,
-                            TAG_NAME},
-                            new int[] { R.id.member_id_list_item, R.id.member_name_list_item });
+                            ListElementsActivity.this, elementsList,
+                            R.layout.element_list_item, new String[] { ELEMENT_ID,
+                            ELEMENT_DISPLAY},
+                            new int[] { R.id.element_id_list_item, R.id.element_detail_list_item });
                     // updating listview
                     setListAdapter(adapter);
                 }

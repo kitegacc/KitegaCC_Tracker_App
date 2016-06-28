@@ -435,8 +435,8 @@ public class UpdateFormActivity extends AppCompatActivity {
 //                     * Updating parsed JSON data into ListView
 //                     * */
 //                    ListAdapter adapter = new SimpleAdapter(
-//                            CommunityMembersList.this, membersList,
-//                            R.layout.member_list_item, new String[] { TAG_MID,
+//                            ListElementsActivity.this, membersList,
+//                            R.layout.element_list_item, new String[] { TAG_MID,
 //                            TAG_NAME},
 //                            new int[] { R.id.member_id_list_item, R.id.member_name_list_item });
 //                    // updating listview

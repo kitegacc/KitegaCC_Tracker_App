@@ -212,7 +212,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(this.context);    // CommunityMembersList.this
+            pDialog = new ProgressDialog(this.context);    // ListElementsActivity.this
             pDialog.setMessage("Loading " + elementType + ". Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
