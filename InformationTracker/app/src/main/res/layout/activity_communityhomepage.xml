@@ -16,21 +16,36 @@
         android:text="@string/welcome_community_homepage"/>
 
     <TextView
-        android:id="@+id/community_info_text"
+        android:id="@+id/community_username_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/community_welcome_text"
         android:text="ERROR: data not populating"
         android:textStyle="bold"/>
 
-    <!--  Button to create a new member screen -->
-    <!--<Button android:id="@+id/btnCreateMember"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Add New Member"-->
-        <!--android:onClick="createMember"-->
-        <!--android:layout_marginTop="25dip"-->
-        <!--android:layout_alignParentBottom="true"/>-->
+    <TextView
+        android:id="@+id/community_location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/community_username_text"
+        android:text="ERROR: data not populating"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/community_com_balance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/community_location_text"
+        android:text="ERROR: data not populating"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/community_vicoba_balance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/community_com_balance_text"
+        android:text="ERROR: data not populating"
+        android:textStyle="bold"/>
 
     <!--  Button to create a new item -->
     <Button android:id="@+id/btnCreateNewElement"
@@ -38,8 +53,26 @@
         android:layout_height="wrap_content"
         android:text="Create New Item"
         android:onClick="createNewElement"
-        android:layout_marginTop="25dip"
+        android:layout_marginTop="10dip"
         android:layout_alignParentBottom="true"/>
+
+    <!--  Button to view all businesses screen -->
+    <Button android:id="@+id/btnViewBusinesses"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="View All Community Businesses"
+        android:onClick="viewBusinesses"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/btnCreateNewElement"/>
+
+    <!--  Button to view all loans screen -->
+    <Button android:id="@+id/btnViewLoans"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="View All Community Loans"
+        android:onClick="viewLoans"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/btnViewBusinesses"/>
 
     <!--  Button to view all members screen -->
     <Button android:id="@+id/btnViewMembers"
@@ -47,7 +80,16 @@
         android:layout_height="wrap_content"
         android:text="View All Community Members"
         android:onClick="viewMembers"
-        android:layout_marginTop="25dip"
-        android:layout_above="@id/btnCreateNewElement"/>
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/btnViewLoans"/>
+
+    <!--  Button to view all meetings screen -->
+    <Button android:id="@+id/btnViewMeetings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="View All Community Meetings"
+        android:onClick="viewMeetings"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/btnViewMembers"/>
 
 </RelativeLayout>

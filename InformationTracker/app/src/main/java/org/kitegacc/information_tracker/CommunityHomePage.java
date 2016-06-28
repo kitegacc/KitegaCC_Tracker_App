@@ -13,6 +13,10 @@ import android.widget.TextView;
 public class CommunityHomePage extends AppCompatActivity {
 
     public static int COMMUNITY_ID = -1;
+    public String USERNAME = "";
+    public String LOCATION = "";
+    public String COM_BALANCE = "";
+    public String VICOBA_BALANCE = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +26,29 @@ public class CommunityHomePage extends AppCompatActivity {
         try {
             Bundle extras = getIntent().getExtras();
             COMMUNITY_ID = Integer.parseInt(extras.getString("community_id"));
+            USERNAME = extras.getString("username");
+            LOCATION = extras.getString("location");
+            COM_BALANCE = extras.getString("com_balance");
+            VICOBA_BALANCE = extras.getString("vicoba_balance");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        TextView com_info_text = (TextView) findViewById(R.id.community_info_text);
-        String com_display_text = "community_id: " + COMMUNITY_ID;
-        com_info_text.setText(com_display_text);
+        TextView com_username_text = (TextView) findViewById(R.id.community_username_text);
+        String com_display_text1 = "Username: " + USERNAME;
+        com_username_text.setText(com_display_text1);
+
+        TextView com_location_text = (TextView) findViewById(R.id.community_location_text);
+        String com_display_text2 = "Location: " + LOCATION;
+        com_location_text.setText(com_display_text2);
+
+        TextView com_com_balance_text = (TextView) findViewById(R.id.community_com_balance_text);
+        String com_display_text3 = "Community Balance: " + COM_BALANCE;
+        com_com_balance_text.setText(com_display_text3);
+
+        TextView com_vicoba_balance_text = (TextView) findViewById(R.id.community_vicoba_balance_text);
+        String com_display_text4 = "Vicoba Balance: " + VICOBA_BALANCE;
+        com_vicoba_balance_text.setText(com_display_text4);
     }
 
     @Override
@@ -58,6 +78,18 @@ public class CommunityHomePage extends AppCompatActivity {
         intent.putExtra("CLICK_ACTION", "MEMBER_PAGE"); // other will be "SELECT_MEMBER"
         intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
         startActivity(intent);
+    }
+
+    public void viewMeetings(View view) {
+
+    }
+
+    public void viewLoans(View view) {
+
+    }
+
+    public void viewBusinesses(View view) {
+
     }
 
     // meeting, member, loan, payment, business

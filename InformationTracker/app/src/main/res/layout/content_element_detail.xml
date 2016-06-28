@@ -16,63 +16,87 @@
         android:id="@+id/detail_page_field1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="1"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/detail_page_field2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="2"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_below="@id/detail_page_field1"/>
 
     <TextView
         android:id="@+id/detail_page_field3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="3"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_below="@id/detail_page_field2"/>
 
     <TextView
         android:id="@+id/detail_page_field4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="4"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_below="@id/detail_page_field3"/>
 
     <TextView
         android:id="@+id/detail_page_field5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="5"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_below="@id/detail_page_field4"/>
+
+    <Button android:id="@+id/detail_page_button6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 6"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        android:layout_alignParentBottom="true"/>
+
+    <Button android:id="@+id/detail_page_button5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 5"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/detail_page_button6"/>
+
+    <Button android:id="@+id/detail_page_button4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Button 4"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/detail_page_button5"/>
 
     <Button android:id="@+id/detail_page_button3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 3"
-        android:onClick="button3clicked"
-        android:layout_marginTop="20dip"
-        android:layout_alignParentBottom="true"/>
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/detail_page_button4"/>
 
     <Button android:id="@+id/detail_page_button2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 2"
-        android:onClick="button2clicked"
-        android:layout_marginTop="20dip"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
         android:layout_above="@id/detail_page_button3"/>
 
     <Button android:id="@+id/detail_page_button1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 1"
-        android:onClick="button1clicked"
-        android:layout_marginTop="20dip"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
         android:layout_above="@id/detail_page_button2"/>
 
 </RelativeLayout>

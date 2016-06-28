@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +25,17 @@ public class ElementDetailActivity extends AppCompatActivity {
     private Bundle bundle;
     private String ELEMENT_ID = "";
     private String VIEW_ELEMENT_URL = "http://androidapp.kitegacc.org/view_element.php";
+    private TextView view_display1;
+    private TextView view_display2;
+    private TextView view_display3;
+    private TextView view_display4;
+    private TextView view_display5;
+    private Button view_button1;
+    private Button view_button2;
+    private Button view_button3;
+    private Button view_button4;
+    private Button view_button5;
+    private Button view_button6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +78,82 @@ public class ElementDetailActivity extends AppCompatActivity {
 
     }
 
+    public String member_id = "";
+    public String name = "";
+    public String age = "";
+    public String emergency_contact = "";
+    public String residence = "";
+    public String kin_or_spouse = "";
+    public String community_id = "";
+
     public void viewMember(JSONObject json) {
         setTitle("Member Details");
-        String member_id = "";
         try {
             member_id = json.getString("member_id");
+            name = json.getString("name");
+            age = json.getString("age");
+            emergency_contact = json.getString("emergency_contact");
+            residence = json.getString("residence");
+            kin_or_spouse = json.getString("kin_or_spouse");
+            community_id = json.getString("community_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        TextView mid_display = (TextView) findViewById(R.id.detail_page_field1);
-        String mid_display_text = "member_id: " + member_id;
-        mid_display.setText(mid_display_text);
+        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        view_display1.setVisibility(View.VISIBLE);
+        String mid_display_text1 = "Name: " + name;
+        view_display1.setText(mid_display_text1);
+
+        view_display2 = (TextView) findViewById(R.id.detail_page_field2);
+        view_display2.setVisibility(View.VISIBLE);
+        String mid_display_text2 = "Age: " + age;
+        view_display2.setText(mid_display_text2);
+
+        view_display3 = (TextView) findViewById(R.id.detail_page_field3);
+        view_display3.setVisibility(View.VISIBLE);
+        String mid_display_text3 = "Emergency Contact: " + emergency_contact;
+        view_display3.setText(mid_display_text3);
+
+        view_display4 = (TextView) findViewById(R.id.detail_page_field4);
+        view_display4.setVisibility(View.VISIBLE);
+        String mid_display_text4 = "Residence: " + residence;
+        view_display4.setText(mid_display_text4);
+
+        view_display5 = (TextView) findViewById(R.id.detail_page_field5);
+        view_display5.setVisibility(View.VISIBLE);
+        String mid_display_text5 = "Kin/Spouse: " + kin_or_spouse;
+        view_display5.setText(mid_display_text5);
+
+        view_button1 = (Button) findViewById(R.id.detail_page_button1);
+        view_button1.setVisibility(View.VISIBLE);
+        view_button1.setText("View Meetings");
+        view_button1.setOnClickListener(new EditElementButtonListener());
+
+        view_button2 = (Button) findViewById(R.id.detail_page_button2);
+        view_button2.setVisibility(View.VISIBLE);
+        view_button2.setText("View Loans");
+        view_button2.setOnClickListener(new EditElementButtonListener());
+
+        view_button3 = (Button) findViewById(R.id.detail_page_button3);
+        view_button3.setVisibility(View.VISIBLE);
+        view_button3.setText("View Payments");
+        view_button3.setOnClickListener(new EditElementButtonListener());
+
+        view_button4 = (Button) findViewById(R.id.detail_page_button4);
+        view_button4.setVisibility(View.VISIBLE);
+        view_button4.setText("View Businesses");
+        view_button4.setOnClickListener(new EditElementButtonListener());
+
+        view_button5 = (Button) findViewById(R.id.detail_page_button5);
+        view_button5.setVisibility(View.VISIBLE);
+        view_button5.setText("Edit Member");
+        view_button5.setOnClickListener(new EditElementButtonListener());
+
+        view_button6 = (Button) findViewById(R.id.detail_page_button6);
+        view_button6.setVisibility(View.VISIBLE);
+        view_button6.setText("Delete Member");
+        view_button6.setOnClickListener(new DeleteElementButtonListener());
     }
 
     public void viewMeeting(JSONObject json) {
@@ -83,6 +162,28 @@ public class ElementDetailActivity extends AppCompatActivity {
 
     public void viewLoan(JSONObject json) {
 
+    }
+
+    class EditElementButtonListener implements View.OnClickListener {
+        public EditElementButtonListener() {
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(ElementDetailActivity.this, "Edit Element", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    class DeleteElementButtonListener implements View.OnClickListener {
+        public DeleteElementButtonListener() {
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(ElementDetailActivity.this, "Delete Element", Toast.LENGTH_LONG).show();
+        }
     }
 
     class LoadElementForView extends AsyncTask<String, String, Boolean> {
@@ -95,6 +196,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         private JSONParserHTTPRequest jphtr;
         private String SECURITY_KEY = "E92FC684-612B-45A9-B55F-F79E75BAF60B";
         private JSONObject json;
+        JSONObject jObject;
 
         public LoadElementForView(Context context, String requestUrl, String elementType, String elementID) {
             jphtr = new JSONParserHTTPRequest();
@@ -128,6 +230,8 @@ public class ElementDetailActivity extends AppCompatActivity {
             String elementIDLabel = elementType + "_id";
             params.put(elementIDLabel, elementID);
 
+            System.out.println(params.toString());
+
             // getting JSON string from URL
             json = jphtr.makeHttpRequest(REQUEST_URL, "GET", params);
 
@@ -139,29 +243,8 @@ public class ElementDetailActivity extends AppCompatActivity {
                 int success = json.getInt("success");
 
                 if (success == 1) {
-                    // products found
-
-                    // Getting Array of Products
-//                members = json.getJSONArray(TAG_MEMBERS);
-//
-//                // looping through All Products
-//                for (int i = 0; i < members.length(); i++) {
-//                    JSONObject c = members.getJSONObject(i);
-//
-//                    // Storing each json item in variable
-//                    String id = c.getString(TAG_MID);
-//                    String name = c.getString(TAG_NAME);
-//
-//                    // creating new HashMap
-//                    HashMap<String, String> map = new HashMap<String, String>();
-//
-//                    // adding each child node to HashMap key => value
-//                    map.put(TAG_MID, id);
-//                    map.put(TAG_NAME, name);
-//
-//                    // adding HashList to ArrayList
-//                    membersList.add(map);
-//                }
+                    JSONArray jArray = json.getJSONArray(elementType);
+                    jObject = jArray.getJSONObject(0);
                     return true;
                 }
             } catch (JSONException e) {
@@ -183,16 +266,16 @@ public class ElementDetailActivity extends AppCompatActivity {
                     if(success) {
                         switch (elementType) {
                             case "community":
-                                viewCommunityAccount(json);
+                                viewCommunityAccount(jObject);
                                 break;
                             case "member":
-                                viewMember(json);
+                                viewMember(jObject);
                                 break;
                             case "meeting":
-                                viewMeeting(json);
+                                viewMeeting(jObject);
                                 break;
                             case "loan":
-                                viewLoan(json);
+                                viewLoan(jObject);
                                 break;
                             case "payment":
                                 break;
@@ -208,13 +291,6 @@ public class ElementDetailActivity extends AppCompatActivity {
                     /**
                      * Updating parsed JSON data into ListView
                      * */
-//                ListAdapter adapter = new SimpleAdapter(
-//                        CommunityMembersList.this, membersList,
-//                        R.layout.member_list_item, new String[] { TAG_MID,
-//                        TAG_NAME},
-//                        new int[] { R.id.member_id_list_item, R.id.member_name_list_item });
-//                // updating listview
-//                setListAdapter(adapter);
                 }
             });
 
