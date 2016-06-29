@@ -141,7 +141,6 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button3.setVisibility(View.VISIBLE);
         view_button3.setText("View Payments");
         view_button3.setOnClickListener(new ListElementsButtonListener("member_payments"));
-        view_button3.setEnabled(false);
 
         view_button4 = (Button) findViewById(R.id.detail_page_button4);
         view_button4.setVisibility(View.VISIBLE);
@@ -257,7 +256,6 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button4.setVisibility(View.VISIBLE);
         view_button4.setText("View Loan Payments");
         view_button4.setOnClickListener(new ListElementsButtonListener("loan_payments"));
-        view_button4.setEnabled(false);
 
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
@@ -354,6 +352,10 @@ public class ElementDetailActivity extends AppCompatActivity {
                 case "meeting_members":
                     break;
                 case "meeting_loans":
+                    break;
+                case "loan_payments":
+                    intent.putExtra("base_id", loan_id);
+                    intent.putExtra("CLICK_ACTION", "PAYMENT_PAGE");
                     break;
                 default:
                     Toast.makeText(ElementDetailActivity.this, "Error Viewing Elements: " + function, Toast.LENGTH_LONG).show();
@@ -485,7 +487,7 @@ public class ElementDetailActivity extends AppCompatActivity {
                             default:
                                 break;
                         }
-                        Toast.makeText(ElementDetailActivity.this, "Successfully loaded " + elementType + "!", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(ElementDetailActivity.this, "Successfully loaded " + elementType + "!", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(ElementDetailActivity.this, "Error loading " + elementType + "!", Toast.LENGTH_LONG).show();
                     }
