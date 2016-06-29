@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CommunityHomePage extends AppCompatActivity {
 
@@ -96,11 +97,16 @@ public class CommunityHomePage extends AppCompatActivity {
     }
 
     public void viewLoans(View view) {
-
+        Intent intent = new Intent(CommunityHomePage.this, ListElementsActivity.class);
+        intent.putExtra("LIST_TYPE", "community_loans"); // other will be "SELECT_MEMBER"
+        intent.putExtra("CLICK_ACTION", "LOAN_PAGE");
+        intent.putExtra("base_id", Integer.toString(COMMUNITY_ID));
+        // intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
+        startActivity(intent);
     }
 
     public void viewBusinesses(View view) {
-
+        Toast.makeText(this, "viewBusinesses", Toast.LENGTH_LONG).show();
     }
 
     // meeting, member, loan, payment, business

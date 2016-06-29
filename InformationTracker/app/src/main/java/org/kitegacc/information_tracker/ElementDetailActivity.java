@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 public class ElementDetailActivity extends AppCompatActivity {
@@ -128,22 +129,26 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button1 = (Button) findViewById(R.id.detail_page_button1);
         view_button1.setVisibility(View.VISIBLE);
         view_button1.setText("View Meetings");
-        view_button1.setOnClickListener(new EditElementButtonListener());
+        view_button1.setOnClickListener(new ListElementsButtonListener("member_meetings"));
+        view_button1.setEnabled(false);
 
         view_button2 = (Button) findViewById(R.id.detail_page_button2);
         view_button2.setVisibility(View.VISIBLE);
         view_button2.setText("View Loans");
-        view_button2.setOnClickListener(new EditElementButtonListener());
+        view_button2.setOnClickListener(new ListElementsButtonListener("member_loans"));
+        view_button2.setEnabled(false);
 
         view_button3 = (Button) findViewById(R.id.detail_page_button3);
         view_button3.setVisibility(View.VISIBLE);
         view_button3.setText("View Payments");
-        view_button3.setOnClickListener(new EditElementButtonListener());
+        view_button3.setOnClickListener(new ListElementsButtonListener("member_payments"));
+        view_button3.setEnabled(false);
 
         view_button4 = (Button) findViewById(R.id.detail_page_button4);
         view_button4.setVisibility(View.VISIBLE);
         view_button4.setText("View Businesses");
-        view_button4.setOnClickListener(new EditElementButtonListener());
+        view_button4.setOnClickListener(new ListElementsButtonListener("member_businesses"));
+        view_button4.setEnabled(false);
 
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
@@ -156,13 +161,196 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setOnClickListener(new DeleteElementButtonListener());
     }
 
+    public String meeting_id = "";
+    public String date_time = "";
+    public String business_summary = "";
+    public String meeting_summary = "";
+
     public void viewMeeting(JSONObject json) {
         setTitle("Meeting Details");
+        try {
+            meeting_id = json.getString("meeting_id");
+            community_id = json.getString("community_id");
+            date_time = json.getString("date_time");
+            business_summary = json.getString("business_summary");
+            meeting_summary = json.getString("meeting_summary");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        view_display1.setVisibility(View.VISIBLE);
+        String mid_display_text1 = "Date: " + date_time;
+        view_display1.setText(mid_display_text1);
+
+        view_display2 = (TextView) findViewById(R.id.detail_page_field2);
+        view_display2.setVisibility(View.VISIBLE);
+        String mid_display_text2 = "Meeting Summary: " + meeting_summary;
+        view_display2.setText(mid_display_text2);
+
+        view_display3 = (TextView) findViewById(R.id.detail_page_field3);
+        view_display3.setVisibility(View.VISIBLE);
+        String mid_display_text3 = "Business Summary: " + business_summary;
+        view_display3.setText(mid_display_text3);
+
+        view_button2 = (Button) findViewById(R.id.detail_page_button2);
+        view_button2.setVisibility(View.VISIBLE);
+        view_button2.setText("View Attending Members");
+        view_button2.setOnClickListener(new ListElementsButtonListener("meeting_members"));
+        view_button2.setEnabled(false);
+
+        view_button3 = (Button) findViewById(R.id.detail_page_button3);
+        view_button3.setVisibility(View.VISIBLE);
+        view_button3.setText("View Loans Awarded");
+        view_button3.setOnClickListener(new ListElementsButtonListener("meeting_loans"));
+        view_button3.setEnabled(false);
+
+        view_button4 = (Button) findViewById(R.id.detail_page_button4);
+        view_button4.setVisibility(View.VISIBLE);
+        view_button4.setText("View Businesses Created");
+        view_button4.setOnClickListener(new ListElementsButtonListener("meeting_businesses"));
+        view_button4.setEnabled(false);
+
+        view_button5 = (Button) findViewById(R.id.detail_page_button5);
+        view_button5.setVisibility(View.VISIBLE);
+        view_button5.setText("Edit Meeting");
+        view_button5.setOnClickListener(new EditElementButtonListener());
+
+        view_button6 = (Button) findViewById(R.id.detail_page_button6);
+        view_button6.setVisibility(View.VISIBLE);
+        view_button6.setText("Delete Meeting");
+        view_button6.setOnClickListener(new DeleteElementButtonListener());
+    }
+
+    public String loan_id = "";
+    public String award_date = "";
+    public String amount = "";
+    public String balance = "";
+
+    public void viewLoan(JSONObject json) {
+        setTitle("Loan Details");
+        try {
+            loan_id = json.getString("loan_id");
+            community_id = json.getString("community_id");
+            award_date = json.getString("award_date");
+            amount = json.getString("amount");
+            balance = json.getString("balance");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        view_display1.setVisibility(View.VISIBLE);
+        String mid_display_text1 = "Award Date: " + award_date;
+        view_display1.setText(mid_display_text1);
+
+        view_display2 = (TextView) findViewById(R.id.detail_page_field2);
+        view_display2.setVisibility(View.VISIBLE);
+        String mid_display_text2 = "Amount: " + amount;
+        view_display2.setText(mid_display_text2);
+
+        view_display3 = (TextView) findViewById(R.id.detail_page_field3);
+        view_display3.setVisibility(View.VISIBLE);
+        String mid_display_text3 = "Balance: " + balance;
+        view_display3.setText(mid_display_text3);
+
+        view_button4 = (Button) findViewById(R.id.detail_page_button4);
+        view_button4.setVisibility(View.VISIBLE);
+        view_button4.setText("View Loan Payments");
+        view_button4.setOnClickListener(new ListElementsButtonListener("loan_payments"));
+        view_button4.setEnabled(false);
+
+        view_button5 = (Button) findViewById(R.id.detail_page_button5);
+        view_button5.setVisibility(View.VISIBLE);
+        view_button5.setText("Edit Loan");
+        view_button5.setOnClickListener(new EditElementButtonListener());
+
+        view_button6 = (Button) findViewById(R.id.detail_page_button6);
+        view_button6.setVisibility(View.VISIBLE);
+        view_button6.setText("Delete Loan");
+        view_button6.setOnClickListener(new DeleteElementButtonListener());
+    }
+
+    public String payment_id = "";
+    public String payment_date = "";
+    public String expected_amount = "";
+    public String actual_amount = "";
+
+    public void viewPayment(JSONObject json) {
+        setTitle("Payment Details");
+        try {
+            payment_id = json.getString("payment_id");
+            loan_id = json.getString("loan_id");
+            member_id = json.getString("member_id");
+            payment_date = json.getString("payment_date");
+            expected_amount = json.getString("expected_amount");
+            actual_amount = json.getString("actual_amount");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        view_display1.setVisibility(View.VISIBLE);
+        String mid_display_text1 = "member_id: " + "member name!!!!!!!!";
+        view_display1.setText(mid_display_text1);
+
+        view_display2 = (TextView) findViewById(R.id.detail_page_field2);
+        view_display2.setVisibility(View.VISIBLE);
+        String mid_display_text2 = "Payment Date: " + payment_date;
+        view_display2.setText(mid_display_text2);
+
+        view_display3 = (TextView) findViewById(R.id.detail_page_field3);
+        view_display3.setVisibility(View.VISIBLE);
+        String mid_display_text3 = "Amount Due: " + expected_amount;
+        view_display3.setText(mid_display_text3);
+
+        view_display4 = (TextView) findViewById(R.id.detail_page_field4);
+        view_display4.setVisibility(View.VISIBLE);
+        String mid_display_text4 = "Amount Paid: " + actual_amount;
+        view_display4.setText(mid_display_text4);
+
+        view_button5 = (Button) findViewById(R.id.detail_page_button5);
+        view_button5.setVisibility(View.VISIBLE);
+        view_button5.setText("Edit Payment");
+        view_button5.setOnClickListener(new EditElementButtonListener());
+
+        view_button6 = (Button) findViewById(R.id.detail_page_button6);
+        view_button6.setVisibility(View.VISIBLE);
+        view_button6.setText("Delete Payment");
+        view_button6.setOnClickListener(new DeleteElementButtonListener());
+    }
+
+    public void viewBusiness(JSONObject json) {
+        setTitle("Business Details");
 
     }
 
-    public void viewLoan(JSONObject json) {
+    class ListElementsButtonListener implements View.OnClickListener {
+        private String function;
+        public ListElementsButtonListener(String function) {
+            this.function = function;
+        }
 
+        @Override
+        public void onClick(View v) {
+            switch (function) {
+                case "member_meetings":
+                    break;
+                case "member_loans":
+                    break;
+                case "member_payments":
+                    break;
+                case "member_businesses":
+                    break;
+                case "meeting_members":
+                    break;
+                case "meeting_loans":
+                    break;
+                default:
+                    Toast.makeText(ElementDetailActivity.this, "Error Viewing Elements: " + function, Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
     }
 
     class EditElementButtonListener implements View.OnClickListener {
@@ -279,8 +467,10 @@ public class ElementDetailActivity extends AppCompatActivity {
                                 viewLoan(jObject);
                                 break;
                             case "payment":
+                                viewPayment(jObject);
                                 break;
                             case "business":
+                                viewBusiness(jObject);
                                 break;
                             default:
                                 break;
