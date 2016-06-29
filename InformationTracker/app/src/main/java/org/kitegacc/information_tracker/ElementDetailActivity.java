@@ -2,6 +2,7 @@ package org.kitegacc.information_tracker;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -130,13 +131,11 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button1.setVisibility(View.VISIBLE);
         view_button1.setText("View Meetings");
         view_button1.setOnClickListener(new ListElementsButtonListener("member_meetings"));
-        view_button1.setEnabled(false);
 
         view_button2 = (Button) findViewById(R.id.detail_page_button2);
         view_button2.setVisibility(View.VISIBLE);
         view_button2.setText("View Loans");
         view_button2.setOnClickListener(new ListElementsButtonListener("member_loans"));
-        view_button2.setEnabled(false);
 
         view_button3 = (Button) findViewById(R.id.detail_page_button3);
         view_button3.setVisibility(View.VISIBLE);
@@ -333,14 +332,24 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(ElementDetailActivity.this, ListElementsActivity.class);
+            intent.putExtra("LIST_TYPE", function);
             switch (function) {
                 case "member_meetings":
+                    intent.putExtra("base_id", member_id);
+                    intent.putExtra("CLICK_ACTION", "MEETING_PAGE");
                     break;
                 case "member_loans":
+                    intent.putExtra("base_id", member_id);
+                    intent.putExtra("CLICK_ACTION", "LOAN_PAGE");
                     break;
                 case "member_payments":
+                    intent.putExtra("base_id", member_id);
+                    intent.putExtra("CLICK_ACTION", "PAYMENT_PAGE");
                     break;
                 case "member_businesses":
+                    intent.putExtra("base_id", member_id);
+                    intent.putExtra("CLICK_ACTION", "BUSINESS_PAGE");
                     break;
                 case "meeting_members":
                     break;
@@ -350,6 +359,7 @@ public class ElementDetailActivity extends AppCompatActivity {
                     Toast.makeText(ElementDetailActivity.this, "Error Viewing Elements: " + function, Toast.LENGTH_LONG).show();
                     break;
             }
+            startActivity(intent);
         }
     }
 
