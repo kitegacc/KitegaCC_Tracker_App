@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CommunityHomePage extends AppCompatActivity {
@@ -49,6 +50,9 @@ public class CommunityHomePage extends AppCompatActivity {
         TextView com_vicoba_balance_text = (TextView) findViewById(R.id.community_vicoba_balance_text);
         String com_display_text4 = "Vicoba Balance: " + VICOBA_BALANCE;
         com_vicoba_balance_text.setText(com_display_text4);
+
+        Button businessButton = (Button) findViewById(R.id.btnViewBusinesses);
+        businessButton.setEnabled(false);
     }
 
     @Override
@@ -77,12 +81,18 @@ public class CommunityHomePage extends AppCompatActivity {
         Intent intent = new Intent(CommunityHomePage.this, ListElementsActivity.class);
         intent.putExtra("LIST_TYPE", "community_members"); // other will be "SELECT_MEMBER"
         intent.putExtra("CLICK_ACTION", "MEMBER_PAGE");
-        intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
+        intent.putExtra("base_id", Integer.toString(COMMUNITY_ID));
+        // intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
         startActivity(intent);
     }
 
     public void viewMeetings(View view) {
-
+        Intent intent = new Intent(CommunityHomePage.this, ListElementsActivity.class);
+        intent.putExtra("LIST_TYPE", "community_meetings"); // other will be "SELECT_MEMBER"
+        intent.putExtra("CLICK_ACTION", "MEETING_PAGE");
+        intent.putExtra("base_id", Integer.toString(COMMUNITY_ID));
+        // intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
+        startActivity(intent);
     }
 
     public void viewLoans(View view) {

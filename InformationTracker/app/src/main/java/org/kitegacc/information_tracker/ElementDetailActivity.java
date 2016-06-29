@@ -157,6 +157,7 @@ public class ElementDetailActivity extends AppCompatActivity {
     }
 
     public void viewMeeting(JSONObject json) {
+        setTitle("Meeting Details");
 
     }
 

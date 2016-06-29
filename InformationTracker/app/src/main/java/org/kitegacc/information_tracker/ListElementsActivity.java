@@ -27,36 +27,51 @@ public class ListElementsActivity extends ListActivity {
     private ProgressDialog pDialog;
 
     // Creating JSON Parser object
-    JSONParser jParser = new JSONParser();
-    JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
+    private JSONParser jParser = new JSONParser();
+    private JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
 
-    ArrayList<HashMap<String, String>> elementsList;
+    private ArrayList<HashMap<String, String>> elementsList;
+    private HashMap<String, String> params;
 
     public static int COMMUNITY_ID = 0;
     // url to get all members list
-    private static String url_all_members = "http://androidapp.kitegacc.org/get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
+    private static String URL_LIST_ELEMENTS = "http://androidapp.kitegacc.org/get_list_elements.php"; // get_all_community_members.php"; //?community_id=0"; // + COMMUNITY_ID;
 
     // JSON Node names
     private String TAG_SUCCESS = "success";
-    private String TAG_MEMBERS = "members";
+    // private String TAG_MEMBERS = "members";
     private String ELEMENT_ID = "";
     private String ELEMENT_DISPLAY = "element_display";
     private String VIEW_TYPE = "view_type";
     private String LIST_TYPE = "";
+    private String JSON_TAG = "";
+    private String BASE_ID = "";
+    private String SECURITY_KEY = "E92FC684-612B-45A9-B55F-F79E75BAF60B";
 
     // products JSONArray
-    JSONArray elements = null;
+    private JSONArray elements = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.elements_list);
 
-        COMMUNITY_ID = Integer.parseInt(getIntent().getExtras().getString("community_id"));
+        // COMMUNITY_ID = Integer.parseInt(getIntent().getExtras().getString("community_id"));
+        BASE_ID = getIntent().getExtras().getString("base_id");
         LIST_TYPE = getIntent().getExtras().getString("LIST_TYPE");
+        params = new HashMap<>();
+        params.put("function", LIST_TYPE);
+        params.put("security_key", SECURITY_KEY);
 
         switch (LIST_TYPE) {
             case "community_members":
                 ELEMENT_ID = "member_id";
+                JSON_TAG = "members";
+                params.put("community_id", BASE_ID);
+                break;
+            case "community_meetings":
+                ELEMENT_ID = "meeting_id";
+                JSON_TAG = "meetings";
+                params.put("community_id", BASE_ID);
                 break;
             default:
                 break;
@@ -96,6 +111,9 @@ public class ListElementsActivity extends ListActivity {
                     case "MEMBER_PAGE":
                         intent.putExtra(VIEW_TYPE, "member");
                         break;
+                    case "MEETING_PAGE":
+                        intent.putExtra(VIEW_TYPE, "meeting");
+                        break;
                     default:
                         break;
                 }
@@ -128,6 +146,17 @@ public class ListElementsActivity extends ListActivity {
      * */
     class LoadElements extends AsyncTask<String, String, String> {
 
+        private String getElementDisplay(JSONObject jObj) throws JSONException {
+            switch(JSON_TAG) {
+                case "members":
+                    return jObj.getString("name");
+                case "meetings":
+                    return jObj.getString("date_time");
+                default:
+                    return "ERROR POPULATING DATA";
+            }
+        }
+
         /**
          * Before starting background thread Show Progress Dialog
          * */
@@ -145,11 +174,10 @@ public class ListElementsActivity extends ListActivity {
          * getting All elements from url
          * */
         protected String doInBackground(String... args) {
-            // Building Parameters
-            HashMap<String, String> params = new HashMap<>();
-            params.put("community_id", Integer.toString(COMMUNITY_ID));
+            // Finish Building Parameters
+            // params.put("community_id", Integer.toString(COMMUNITY_ID));
             // getting JSON string from URL
-            JSONObject json = jphtr.makeHttpRequest(url_all_members, "GET", params);
+            JSONObject json = jphtr.makeHttpRequest(URL_LIST_ELEMENTS, "GET", params);
 
             // Check your log cat for JSON response
             Log.d("All Elements: ", json.toString());
@@ -159,41 +187,32 @@ public class ListElementsActivity extends ListActivity {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // products found
-                    // Getting Array of Products
-                    elements = json.getJSONArray(TAG_MEMBERS);
+                    // elements found
+                    // Getting Array of Elements
+                    elements = json.getJSONArray(JSON_TAG);
 
-                    // looping through All Products
+                    // looping through All Elements
                     for (int i = 0; i < elements.length(); i++) {
                         JSONObject c = elements.getJSONObject(i);
 
                         // Storing each json item in variable
                         String id = c.getString(ELEMENT_ID);
-                        String name = c.getString("name");
+                        String display = getElementDisplay(c);
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // adding each child node to HashMap key => value
                         map.put(ELEMENT_ID, id);
-                        map.put(ELEMENT_DISPLAY, name);
+                        map.put(ELEMENT_DISPLAY, display);
 
                         // adding HashList to ArrayList
                         elementsList.add(map);
                     }
-                } /*else {
-                    // no products found
-                    // Launch Add New product Activity
-                    Intent i = new Intent(getApplicationContext(),
-                            NewProductActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                }*/
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 
