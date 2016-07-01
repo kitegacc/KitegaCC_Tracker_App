@@ -276,6 +276,7 @@ public class CreateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_1.setHint("Member Making Payment");
         FORM_FIELD_1.setVisibility(View.VISIBLE);
         FORM_FIELD_1.setHint("Member Making Payment");
+        FORM_FIELD_2.setInputType(InputType.TYPE_NULL);
         elementPicker = new ElementPickerDialog("member", this);
         FORM_FIELD_1.setOnClickListener(new View.OnClickListener() {
             @Override

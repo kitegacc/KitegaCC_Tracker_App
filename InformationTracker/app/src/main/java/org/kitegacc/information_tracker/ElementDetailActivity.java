@@ -2,9 +2,11 @@ package org.kitegacc.information_tracker;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class ElementDetailActivity extends AppCompatActivity {
     private Bundle bundle;
     private String ELEMENT_ID = "";
     private String VIEW_ELEMENT_URL = "http://androidapp.kitegacc.org/view_element.php";
+    private static String url_create_element = "http://androidapp.kitegacc.org/create_element.php";
     private TextView view_display1;
     private TextView view_display2;
     private TextView view_display3;
@@ -38,6 +41,8 @@ public class ElementDetailActivity extends AppCompatActivity {
     private Button view_button4;
     private Button view_button5;
     private Button view_button6;
+    private ElementPickerDialog elementPicker;
+    JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,15 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         LoadElementForView loadElementView = new LoadElementForView(ElementDetailActivity.this, VIEW_ELEMENT_URL, VIEW_TYPE, ELEMENT_ID);
         loadElementView.execute();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            elementPicker.setID(data.getExtras().getString("element_id"));
+            elementPicker.setDisplay(data.getExtras().getString("element_display"));
+        }
     }
 
     public void viewCommunityAccount(JSONObject json) {
@@ -193,21 +207,33 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         view_button2 = (Button) findViewById(R.id.detail_page_button2);
         view_button2.setVisibility(View.VISIBLE);
-        view_button2.setText("View Attending Members");
-        view_button2.setOnClickListener(new ListElementsButtonListener("meeting_members"));
-        view_button2.setEnabled(false);
+        view_button2.setText("Remove Meeting Items");
+        view_button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeMeetingItems();
+            }
+        });
 
         view_button3 = (Button) findViewById(R.id.detail_page_button3);
         view_button3.setVisibility(View.VISIBLE);
-        view_button3.setText("View Loans Awarded");
-        view_button3.setOnClickListener(new ListElementsButtonListener("meeting_loans"));
-        view_button3.setEnabled(false);
+        view_button3.setText("Add Meeting Items");
+        view_button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMeetingItems();
+            }
+        });
 
         view_button4 = (Button) findViewById(R.id.detail_page_button4);
         view_button4.setVisibility(View.VISIBLE);
-        view_button4.setText("View Businesses Created");
-        view_button4.setOnClickListener(new ListElementsButtonListener("meeting_businesses"));
-        view_button4.setEnabled(false);
+        view_button4.setText("View Meeting Items");
+        view_button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewMeetingItems();
+            }
+        });
 
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
@@ -218,6 +244,126 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Meeting");
         view_button6.setOnClickListener(new DeleteElementButtonListener());
+    }
+
+    public void removeMeetingItems() {
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {" Remove Attending Member "," Remove Awarded Loan "," Remove Created Business "};
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remove Meeting Items ...");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                switch(item)
+                {
+                    case 0:
+                        new ListElementsButtonListener("meeting_members");
+                        break;
+                    case 1:
+                        new ListElementsButtonListener("meeting_loans");
+                        break;
+                    case 2:
+                        new ListElementsButtonListener("meeting_businesses");
+                        break;
+                    default:
+                        break;
+
+                }
+                dialog.dismiss();
+            }
+        });
+        levelDialog = builder.create();
+        levelDialog.show();
+    }
+
+    public void addMeetingItems() {
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {" Add Attending Member "," Add Loans Awarded "," Add Businesses Created "};
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Meeting Items ...");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                switch(item) {
+                    case 0:
+                        addToMeeting("member");
+                        break;
+                    case 1:
+                        addToMeeting("loan");
+                        break;
+                    case 2:
+                        addToMeeting("business");
+                        break;
+                    default:
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+        levelDialog = builder.create();
+        levelDialog.show();
+    }
+
+    public void addToMeeting(String elementType) {
+        elementPicker = new ElementPickerDialog(elementType, this);
+        elementPicker.pickElement();
+        String element_id = elementPicker.getID();
+        // String element_display = elementPicker.getDisplay();
+        HashMap<String, String> args = new HashMap<>();
+        args.put("meeting_id", meeting_id);
+        switch (elementType) {
+            case "member":
+                args.put("form_type", "MemberHasMeeting");
+                args.put("member_id", element_id);
+                break;
+            case "loan":
+                args.put("form_type", "LoanAwardedMeeting");
+                args.put("loan_id", element_id);
+                break;
+            case "business":        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                args.put("form_type", "");
+                args.put("business_id", element_id);
+                break;
+            default:
+                break;
+        }
+        jphtr.makeHttpRequest(url_create_element, "GET", args);
+    }
+
+    public void viewMeetingItems() {
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {" View Attending Members "," View Loans Awarded "," View Businesses Created "};
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("View Meeting Items ...");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                switch(item)
+                {
+                    case 0:
+                        new ListElementsButtonListener("meeting_members");
+                        break;
+                    case 1:
+                        new ListElementsButtonListener("meeting_loans");
+                        break;
+                    case 2:
+                        new ListElementsButtonListener("meeting_businesses");
+                        break;
+                    default:
+                        break;
+
+                }
+                dialog.dismiss();
+            }
+        });
+        levelDialog = builder.create();
+        levelDialog.show();
     }
 
     public String loan_id = "";
