@@ -124,12 +124,16 @@ public class ListElementsActivity extends ListActivity {
                 // getting values from selected ListItem
                 String element_id = ((TextView) view.findViewById(R.id.element_id_list_item)).getText()
                         .toString();
+                String element_display = ((TextView) view.findViewById(R.id.element_detail_list_item)).getText()
+                        .toString();
 
                 // send element_id to the element detail page
                 intent.putExtra(ELEMENT_ID, element_id);
 
                 Bundle extras = getIntent().getExtras();
                 String click_action = extras.getString("CLICK_ACTION");
+
+                Boolean launchView = true;
 
                 // specify what type of element to retrieve
                 switch (click_action) {
@@ -145,12 +149,22 @@ public class ListElementsActivity extends ListActivity {
                     case "PAYMENT_PAGE":
                         intent.putExtra(VIEW_TYPE, "payment");
                         break;
+                    case "RETURN_ELEMENT":
+                        Intent i = new Intent();
+                        i.putExtra("element_id", element_id);
+                        i.putExtra("element_display", element_display);
+                        setResult(RESULT_OK, i);
+                        launchView = false;
+                        finish();
+                        break;
                     default:
                         break;
                 }
 
                 // starting new activity and expecting some response back
-                startActivityForResult(intent, 100);
+                if(launchView) {
+                    startActivityForResult(intent, 100);
+                }
             }
         });
 

@@ -19,6 +19,7 @@ public class CommunityHomePage extends AppCompatActivity {
     public String LOCATION = "";
     public String COM_BALANCE = "";
     public String VICOBA_BALANCE = "";
+    public static String GLOBAL_COMMUNITY_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class CommunityHomePage extends AppCompatActivity {
             LOCATION = extras.getString("location");
             COM_BALANCE = extras.getString("com_balance");
             VICOBA_BALANCE = extras.getString("vicoba_balance");
+            GLOBAL_COMMUNITY_ID = Integer.toString(COMMUNITY_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -112,7 +114,7 @@ public class CommunityHomePage extends AppCompatActivity {
     // meeting, member, loan, payment, business
     public void createNewElement(View view) {
         final AlertDialog levelDialog;
-        final CharSequence[] items = {" Member "," Meeting "," Loan "," Payment ", " Business "};
+        final CharSequence[] items = {" Member "," Meeting "," Loan "," Business "};
 
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -133,9 +135,6 @@ public class CommunityHomePage extends AppCompatActivity {
                         createLoan();
                         break;
                     case 3:
-                        createPayment();
-                        break;
-                    case 4:
                         createBusiness();
                         break;
                     default:
@@ -168,10 +167,6 @@ public class CommunityHomePage extends AppCompatActivity {
         intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
         intent.putExtra("form", "loan");
         startActivity(intent);
-    }
-
-    public void createPayment() {
-
     }
 
     public void createBusiness() {

@@ -252,6 +252,16 @@ public class ElementDetailActivity extends AppCompatActivity {
         String mid_display_text3 = "Balance: " + balance;
         view_display3.setText(mid_display_text3);
 
+        view_button3 = (Button) findViewById(R.id.detail_page_button3);
+        view_button3.setVisibility(View.VISIBLE);
+        view_button3.setText("Create Loan Payment");
+        view_button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createLoanPayment();
+            }
+        });
+
         view_button4 = (Button) findViewById(R.id.detail_page_button4);
         view_button4.setVisibility(View.VISIBLE);
         view_button4.setText("View Loan Payments");
@@ -385,6 +395,14 @@ public class ElementDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             Toast.makeText(ElementDetailActivity.this, "Delete Element", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void createLoanPayment() {
+        Intent intent = new Intent(ElementDetailActivity.this, CreateFormActivity.class);
+        intent.putExtra("community_id", CommunityHomePage.GLOBAL_COMMUNITY_ID);
+        intent.putExtra("loan_id", loan_id);
+        intent.putExtra("form", "payment");
+        startActivity(intent);
     }
 
     class LoadElementForView extends AsyncTask<String, String, Boolean> {

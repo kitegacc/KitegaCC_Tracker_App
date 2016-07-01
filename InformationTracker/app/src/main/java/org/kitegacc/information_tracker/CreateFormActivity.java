@@ -2,6 +2,7 @@ package org.kitegacc.information_tracker;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.renderscript.ScriptGroup;
 import android.support.design.widget.TextInputLayout;
@@ -27,7 +28,9 @@ import java.util.Locale;
 
 public class CreateFormActivity extends AppCompatActivity {
 
-    private String COMMUNITY_ID;
+    private String COMMUNITY_ID = "";
+    private String LOAN_ID = "";
+    private String MEMBER_ID = "";
     private String FORM_TYPE = "";
     private int NUM_FIELDS = 0;
     private HashMap<String, String> QUERY_ARGS;
@@ -36,6 +39,7 @@ public class CreateFormActivity extends AppCompatActivity {
     private static String url_create_element = "http://androidapp.kitegacc.org/create_element.php";
     public DatePickerDialog datePickerDialog;
     public SimpleDateFormat dateFormatter;
+    public ElementPickerDialog elementPicker;
 
     private EditText FORM_FIELD_1;
     private EditText FORM_FIELD_2;
@@ -77,6 +81,7 @@ public class CreateFormActivity extends AppCompatActivity {
                 createLoanForm(bundle);
                 break;
             case "payment":
+                createPaymentForm(bundle);
                 break;
             case "business":
                 break;
@@ -259,6 +264,65 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
+    public void createPaymentForm(Bundle bundle) {
+        COMMUNITY_ID = bundle.getString("community_id");
+        LOAN_ID = bundle.getString("loan_id");
+        NUM_FIELDS = 4;
+        QUERY_ARGS.put("form_type", "payment");
+        QUERY_ARGS.put("loan_id", LOAN_ID);
+        setTitle("Create Payment");
+
+        INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_1.setHint("Member Making Payment");
+        FORM_FIELD_1.setVisibility(View.VISIBLE);
+        FORM_FIELD_1.setHint("Member Making Payment");
+        elementPicker = new ElementPickerDialog("member", this);
+        FORM_FIELD_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                elementPicker.pickElement();
+                MEMBER_ID = elementPicker.getID();
+                FORM_FIELD_1.setText(elementPicker.getDisplay());
+            }
+        });
+
+        INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_2.setHint("Payment Date");
+        FORM_FIELD_2.setVisibility(View.VISIBLE);
+        FORM_FIELD_2.setHint("Payment Date");
+        FORM_FIELD_2.setInputType(InputType.TYPE_NULL);
+        Calendar newCalendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                FORM_FIELD_2.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        FORM_FIELD_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
+
+        INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_3.setHint("Expected Amount");
+        FORM_FIELD_3.setVisibility(View.VISIBLE);
+        FORM_FIELD_3.setHint("Expected Amount");
+        FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_4.setHint("Actual Amount");
+        FORM_FIELD_4.setVisibility(View.VISIBLE);
+        FORM_FIELD_4.setHint("Actual Amount");
+        FORM_FIELD_4.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+    }
+
     public void submitCreateForm(View view) {
         if(isFormComplete()) {
             switch (FORM_TYPE) {
@@ -275,6 +339,7 @@ public class CreateFormActivity extends AppCompatActivity {
                     submitCreateLoanForm();
                     break;
                 case "payment":
+                    submitCreatePaymentForm();
                     break;
                 default:
                     break;
@@ -314,6 +379,14 @@ public class CreateFormActivity extends AppCompatActivity {
         new FormPoster().execute();
     }
 
+    public void submitCreatePaymentForm() {
+        QUERY_ARGS.put("member_id", MEMBER_ID);
+        QUERY_ARGS.put("payment_date", FORM_FIELD_2.getText().toString());
+        QUERY_ARGS.put("expected_amount", FORM_FIELD_3.getText().toString());
+        QUERY_ARGS.put("actual_amount", FORM_FIELD_3.getText().toString());
+        new FormPoster().execute();
+    }
+
     public boolean isFormComplete() {
         if(NUM_FIELDS >= 1) {
             if(FORM_FIELD_1.getText().toString().trim().equals("")) return false;
@@ -338,6 +411,16 @@ public class CreateFormActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            elementPicker.setID(data.getExtras().getString("element_id"));
+            elementPicker.setDisplay(data.getExtras().getString("element_display"));
+        }
+    }
+
     /**
      * Background Async Task to Load all members by making HTTP Request
      * */
@@ -378,47 +461,6 @@ public class CreateFormActivity extends AppCompatActivity {
             } catch(Exception e) {
                 e.printStackTrace();
             }
-//
-//            try {
-//                // Checking for SUCCESS TAG
-//                int success = json.getInt(TAG_SUCCESS);
-//
-//                if (success == 1) {
-//                    // products found
-//                    // Getting Array of Products
-//                    members = json.getJSONArray(TAG_MEMBERS);
-//
-//                    // looping through All Products
-//                    for (int i = 0; i < members.length(); i++) {
-//                        JSONObject c = members.getJSONObject(i);
-//
-//                        // Storing each json item in variable
-//                        String id = c.getString(TAG_MID);
-//                        String name = c.getString(TAG_NAME);
-//
-//                        // creating new HashMap
-//                        HashMap<String, String> map = new HashMap<String, String>();
-//
-//                        // adding each child node to HashMap key => value
-//                        map.put(TAG_MID, id);
-//                        map.put(TAG_NAME, name);
-//
-//                        // adding HashList to ArrayList
-//                        membersList.add(map);
-//                    }
-//                } /*else {
-//                    // no products found
-//                    // Launch Add New product Activity
-//                    Intent i = new Intent(getApplicationContext(),
-//                            NewProductActivity.class);
-//                    // Closing all previous activities
-//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    startActivity(i);
-//                }*/
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
             return false;
         }
 
@@ -429,21 +471,6 @@ public class CreateFormActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             // dismiss the dialog after getting all products
             pDialog.dismiss();
-            // updating UI from Background Thread
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    /**
-//                     * Updating parsed JSON data into ListView
-//                     * */
-//                    ListAdapter adapter = new SimpleAdapter(
-//                            ListElementsActivity.this, membersList,
-//                            R.layout.element_list_item, new String[] { TAG_MID,
-//                            TAG_NAME},
-//                            new int[] { R.id.member_id_list_item, R.id.member_name_list_item });
-//                    // updating listview
-//                    setListAdapter(adapter);
-//                }
-//            });
             if(success) {
                 Toast.makeText(CreateFormActivity.this, "Successfully created " + FORM_TYPE + "!", Toast.LENGTH_LONG).show();
                 finish();
