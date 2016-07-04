@@ -78,6 +78,11 @@ public class ListElementsActivity extends ListActivity {
                 JSON_TAG = "loans";
                 params.put("community_id", BASE_ID);
                 break;
+            case "community_businesses":
+                ELEMENT_ID = "business_id";
+                JSON_TAG = "businesses";
+                params.put("community_id", BASE_ID);
+                break;
             case "member_meetings":
                 ELEMENT_ID = "meeting_id";
                 JSON_TAG = "meetings";
@@ -149,6 +154,9 @@ public class ListElementsActivity extends ListActivity {
                     case "PAYMENT_PAGE":
                         intent.putExtra(VIEW_TYPE, "payment");
                         break;
+                    case "BUSINESS_PAGE":
+                        intent.putExtra(VIEW_TYPE, "business");
+                        break;
                     case "RETURN_ELEMENT":
                         Intent i = new Intent();
                         i.putExtra("element_id", element_id);
@@ -205,6 +213,10 @@ public class ListElementsActivity extends ListActivity {
                     String payment_date = jObj.getString("payment_date");
                     String actual_amount = jObj.getString("actual_amount");
                     return payment_date + " amount: " + actual_amount;
+                case "businesses":
+                    String name = jObj.getString("name");
+                    String status = jObj.getString("business_status");
+                    return name + " status: " + status;
                 default:
                     return "ERROR POPULATING DATA";
             }

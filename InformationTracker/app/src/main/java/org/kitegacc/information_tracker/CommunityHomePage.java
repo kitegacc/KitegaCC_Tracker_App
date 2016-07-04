@@ -54,8 +54,8 @@ public class CommunityHomePage extends AppCompatActivity {
         String com_display_text4 = "Vicoba Balance: " + VICOBA_BALANCE;
         com_vicoba_balance_text.setText(com_display_text4);
 
-        Button businessButton = (Button) findViewById(R.id.btnViewBusinesses);
-        businessButton.setEnabled(false);
+        // Button businessButton = (Button) findViewById(R.id.btnViewBusinesses);
+        // businessButton.setEnabled(false);
     }
 
     @Override
@@ -108,7 +108,12 @@ public class CommunityHomePage extends AppCompatActivity {
     }
 
     public void viewBusinesses(View view) {
-        Toast.makeText(this, "viewBusinesses", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(CommunityHomePage.this, ListElementsActivity.class);
+        intent.putExtra("LIST_TYPE", "community_businesses"); // other will be "SELECT_MEMBER"
+        intent.putExtra("CLICK_ACTION", "BUSINESS_PAGE");
+        intent.putExtra("base_id", Integer.toString(COMMUNITY_ID));
+        // intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
+        startActivity(intent);
     }
 
     // meeting, member, loan, payment, business

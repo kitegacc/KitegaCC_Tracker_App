@@ -479,9 +479,51 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setOnClickListener(new DeleteElementButtonListener());
     }
 
+    public String business_id = "";
+    public String business_status = "";
+
     public void viewBusiness(JSONObject json) {
         setTitle("Business Details");
+        try {
+            business_id = json.getString("business_id");
+            community_id = json.getString("community_id");
+            meeting_id = json.getString("meeting_id");
+            name = json.getString("name");
+            business_summary = json.getString("business_summary");
+            business_status = json.getString("business_status");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        view_display1.setVisibility(View.VISIBLE);
+        String mid_display_text1 = "Business Name: " + name;
+        view_display1.setText(mid_display_text1);
+
+        view_display2 = (TextView) findViewById(R.id.detail_page_field2);
+        view_display2.setVisibility(View.VISIBLE);
+        String mid_display_text2 = "Business Summary: " + business_summary;
+        view_display2.setText(mid_display_text2);
+
+        view_display3 = (TextView) findViewById(R.id.detail_page_field3);
+        view_display3.setVisibility(View.VISIBLE);
+        String mid_display_text3 = "Business Status: " + business_status;
+        view_display3.setText(mid_display_text3);
+
+        view_button4 = (Button) findViewById(R.id.detail_page_button4);
+        view_button4.setVisibility(View.VISIBLE);
+        view_button4.setText("View Owning Members");
+        view_button4.setOnClickListener(new ListElementsButtonListener("business_members"));
+
+        view_button5 = (Button) findViewById(R.id.detail_page_button5);
+        view_button5.setVisibility(View.VISIBLE);
+        view_button5.setText("Edit Payment");
+        view_button5.setOnClickListener(new EditElementButtonListener());
+
+        view_button6 = (Button) findViewById(R.id.detail_page_button6);
+        view_button6.setVisibility(View.VISIBLE);
+        view_button6.setText("Delete Payment");
+        view_button6.setOnClickListener(new DeleteElementButtonListener());
     }
 
     class ListElementsButtonListener implements View.OnClickListener {
@@ -518,6 +560,8 @@ public class ElementDetailActivity extends AppCompatActivity {
                 case "loan_payments":
                     intent.putExtra("base_id", loan_id);
                     intent.putExtra("CLICK_ACTION", "PAYMENT_PAGE");
+                    break;
+                case "business_members":
                     break;
                 default:
                     Toast.makeText(ElementDetailActivity.this, "Error Viewing Elements: " + function, Toast.LENGTH_LONG).show();
