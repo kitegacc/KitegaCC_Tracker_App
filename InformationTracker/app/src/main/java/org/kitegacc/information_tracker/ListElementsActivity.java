@@ -98,10 +98,35 @@ public class ListElementsActivity extends ListActivity {
                 JSON_TAG = "payments";
                 params.put("member_id", BASE_ID);
                 break;
+            case "member_businesses":
+                ELEMENT_ID = "business_id";
+                JSON_TAG = "businesses";
+                params.put("member_id", BASE_ID);
+                break;
+            case "meeting_members":
+                ELEMENT_ID = "member_id";
+                JSON_TAG = "members";
+                params.put("meeting_id", BASE_ID);
+                break;
+            case "meeting_loans":
+                ELEMENT_ID = "loan_id";
+                JSON_TAG = "loans";
+                params.put("meeting_id", BASE_ID);
+                break;
+            case "meeting_businesses":
+                ELEMENT_ID = "business_id";
+                JSON_TAG = "businesses";
+                params.put("meeting_id", BASE_ID);
+                break;
             case "loan_payments":
                 ELEMENT_ID = "payment_id";
                 JSON_TAG = "payments";
                 params.put("loan_id", BASE_ID);
+                break;
+            case "business_members":
+                ELEMENT_ID = "member_id";
+                JSON_TAG = "members";
+                params.put("business_id", BASE_ID);
                 break;
             default:
                 break;

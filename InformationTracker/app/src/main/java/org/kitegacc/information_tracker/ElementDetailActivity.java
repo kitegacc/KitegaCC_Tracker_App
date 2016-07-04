@@ -165,7 +165,6 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button4.setVisibility(View.VISIBLE);
         view_button4.setText("View Businesses");
         view_button4.setOnClickListener(new ListElementsButtonListener("member_businesses"));
-        view_button4.setEnabled(false);
 
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
@@ -554,14 +553,24 @@ public class ElementDetailActivity extends AppCompatActivity {
                     intent.putExtra("CLICK_ACTION", "BUSINESS_PAGE");
                     break;
                 case "meeting_members":
+                    intent.putExtra("base_id", meeting_id);
+                    intent.putExtra("CLICK_ACTION", "MEMBER_PAGE");
                     break;
                 case "meeting_loans":
+                    intent.putExtra("base_id", meeting_id);
+                    intent.putExtra("CLICK_ACTION", "LOAN_PAGE");
+                    break;
+                case "meeting_businesses":
+                    intent.putExtra("base_id", meeting_id);
+                    intent.putExtra("CLICK_ACTION", "BUSINESS_PAGE");
                     break;
                 case "loan_payments":
                     intent.putExtra("base_id", loan_id);
                     intent.putExtra("CLICK_ACTION", "PAYMENT_PAGE");
                     break;
                 case "business_members":
+                    intent.putExtra("base_id", business_id);
+                    intent.putExtra("CLICK_ACTION", "MEMBER_PAGE");
                     break;
                 default:
                     Toast.makeText(ElementDetailActivity.this, "Error Viewing Elements: " + function, Toast.LENGTH_LONG).show();
