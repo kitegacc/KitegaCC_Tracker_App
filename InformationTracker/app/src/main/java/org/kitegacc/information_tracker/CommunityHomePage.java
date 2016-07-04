@@ -170,6 +170,9 @@ public class CommunityHomePage extends AppCompatActivity {
     }
 
     public void createBusiness() {
-
+        Intent intent = new Intent(CommunityHomePage.this, CreateFormActivity.class);
+        intent.putExtra("community_id",Integer.toString(COMMUNITY_ID));
+        intent.putExtra("form", "business");
+        startActivity(intent);
     }
 }

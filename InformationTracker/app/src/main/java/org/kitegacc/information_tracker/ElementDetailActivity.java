@@ -43,6 +43,8 @@ public class ElementDetailActivity extends AppCompatActivity {
     private Button view_button6;
     private ElementPickerDialog elementPicker;
     JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
+    public HashMap<String, String> QUERY_ARGS;
+    public String elementType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,9 @@ public class ElementDetailActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             elementPicker.setID(data.getExtras().getString("element_id"));
             elementPicker.setDisplay(data.getExtras().getString("element_display"));
+        }
+        if(VIEW_TYPE.equals("meeting")) {
+            addToMeeting();
         }
     }
 
@@ -287,20 +292,22 @@ public class ElementDetailActivity extends AppCompatActivity {
         builder.setTitle("Add Meeting Items ...");
         builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-
+                elementType = "";
                 switch(item) {
                     case 0:
-                        addToMeeting("member");
+                        elementType = "member";
                         break;
                     case 1:
-                        addToMeeting("loan");
+                        elementType = "loan";
                         break;
                     case 2:
-                        addToMeeting("business");
+                        elementType = "business";
                         break;
                     default:
                         break;
                 }
+                elementPicker = new ElementPickerDialog(elementType, ElementDetailActivity.this);
+                elementPicker.pickElement();
                 dialog.dismiss();
             }
         });
@@ -308,30 +315,29 @@ public class ElementDetailActivity extends AppCompatActivity {
         levelDialog.show();
     }
 
-    public void addToMeeting(String elementType) {
-        elementPicker = new ElementPickerDialog(elementType, this);
-        elementPicker.pickElement();
+    public void addToMeeting() {
         String element_id = elementPicker.getID();
         // String element_display = elementPicker.getDisplay();
-        HashMap<String, String> args = new HashMap<>();
-        args.put("meeting_id", meeting_id);
+        QUERY_ARGS = new HashMap<>();
+        QUERY_ARGS.put("meeting_id", meeting_id);
         switch (elementType) {
             case "member":
-                args.put("form_type", "MemberHasMeeting");
-                args.put("member_id", element_id);
+                QUERY_ARGS.put("form_type", "MemberHasMeeting");
+                QUERY_ARGS.put("member_id", element_id);
                 break;
             case "loan":
-                args.put("form_type", "LoanAwardedMeeting");
-                args.put("loan_id", element_id);
+                QUERY_ARGS.put("form_type", "LoanAwardedMeeting");
+                QUERY_ARGS.put("loan_id", element_id);
                 break;
             case "business":        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                args.put("form_type", "");
-                args.put("business_id", element_id);
+                QUERY_ARGS.put("form_type", "");
+                QUERY_ARGS.put("business_id", element_id);
                 break;
             default:
                 break;
         }
-        jphtr.makeHttpRequest(url_create_element, "GET", args);
+        Log.d("QUERY_ARGS: ", QUERY_ARGS.toString());
+        new FormPoster().execute();
     }
 
     public void viewMeetingItems() {
@@ -660,6 +666,66 @@ public class ElementDetailActivity extends AppCompatActivity {
                      * */
                 }
             });
+
+        }
+
+    }
+
+    class FormPoster extends AsyncTask<Void, Void, Boolean> {
+
+        private ProgressDialog pDialog;
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(ElementDetailActivity.this);
+            pDialog.setMessage("Adding Item. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        /**
+         * getting All products from url
+         * */
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // Building Parameters
+//            HashMap<String, String> params = new HashMap<>();
+//            params.put("community_id", Integer.toString(COMMUNITY_ID));
+//            // getting JSON string from URL
+            JSONObject json = jphtr.makeHttpRequest(url_create_element, "GET", QUERY_ARGS);
+
+            // Check your log cat for JSON response
+            Log.d("All Products: ", json.toString());
+
+            try {
+                int success = json.getInt("success");
+                if(success == 1) {
+                    return true;
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            // dismiss the dialog after getting all products
+            pDialog.dismiss();
+            if(success) {
+                // Toast.makeText(ElementDetailActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                // finish();
+            } else {
+                // Toast.makeText(ElementDetailActivity.this, "Error", Toast.LENGTH_LONG).show();
+            }
 
         }
 

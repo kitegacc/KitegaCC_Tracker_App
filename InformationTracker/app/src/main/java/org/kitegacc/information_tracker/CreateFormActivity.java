@@ -84,6 +84,7 @@ public class CreateFormActivity extends AppCompatActivity {
                 createPaymentForm(bundle);
                 break;
             case "business":
+                createBusinessForm(bundle);
                 break;
             default:
                 break;
@@ -324,6 +325,26 @@ public class CreateFormActivity extends AppCompatActivity {
         FORM_FIELD_4.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
+    public void createBusinessForm(Bundle bundle) {
+        COMMUNITY_ID = bundle.getString("community_id");
+        NUM_FIELDS = 2;
+        QUERY_ARGS.put("form_type", "business");
+        QUERY_ARGS.put("community_id", COMMUNITY_ID);
+        QUERY_ARGS.put("meeting_id", "-1");
+        QUERY_ARGS.put("business_status", "active");
+        setTitle("Create Business");
+
+        INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_1.setHint("Business Name");
+        FORM_FIELD_1.setVisibility(View.VISIBLE);
+        FORM_FIELD_1.setHint("Business Name");
+
+        INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_2.setHint("Business Summary");
+        FORM_FIELD_2.setVisibility(View.VISIBLE);
+        FORM_FIELD_2.setHint("Business Summary");
+    }
+
     public void submitCreateForm(View view) {
         if(isFormComplete()) {
             switch (FORM_TYPE) {
@@ -342,6 +363,8 @@ public class CreateFormActivity extends AppCompatActivity {
                 case "payment":
                     submitCreatePaymentForm();
                     break;
+                case "business":
+                    submitCreateBusinessForm();
                 default:
                     break;
             }
@@ -385,6 +408,12 @@ public class CreateFormActivity extends AppCompatActivity {
         QUERY_ARGS.put("payment_date", FORM_FIELD_2.getText().toString());
         QUERY_ARGS.put("expected_amount", FORM_FIELD_3.getText().toString());
         QUERY_ARGS.put("actual_amount", FORM_FIELD_3.getText().toString());
+        new FormPoster().execute();
+    }
+
+    public void submitCreateBusinessForm() {
+        QUERY_ARGS.put("name", FORM_FIELD_1.getText().toString());
+        QUERY_ARGS.put("business_summary", FORM_FIELD_2.getText().toString());
         new FormPoster().execute();
     }
 
