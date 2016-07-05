@@ -94,6 +94,9 @@ public class ElementDetailActivity extends AppCompatActivity {
         if(VIEW_TYPE.equals("meeting")) {
             addToMeeting();
         }
+        if(VIEW_TYPE.equals("business")) {
+            addToBusiness();
+        }
     }
 
     public void viewCommunityAccount(JSONObject json) {
@@ -336,8 +339,8 @@ public class ElementDetailActivity extends AppCompatActivity {
                 QUERY_ARGS.put("form_type", "LoanAwardedMeeting");
                 QUERY_ARGS.put("loan_id", element_id);
                 break;
-            case "business":        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                QUERY_ARGS.put("form_type", "");
+            case "business":
+                QUERY_ARGS.put("form_type", "MeetingHasBusiness");
                 QUERY_ARGS.put("business_id", element_id);
                 break;
             default:
@@ -541,6 +544,16 @@ public class ElementDetailActivity extends AppCompatActivity {
         String mid_display_text3 = "Business Status: " + business_status;
         view_display3.setText(mid_display_text3);
 
+        view_button3 = (Button) findViewById(R.id.detail_page_button3);
+        view_button3.setVisibility(View.VISIBLE);
+        view_button3.setText("Add Owning Member");
+        view_button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addBusinessMember();
+            }
+        });
+
         view_button4 = (Button) findViewById(R.id.detail_page_button4);
         view_button4.setVisibility(View.VISIBLE);
         view_button4.setText("View Owning Members");
@@ -555,6 +568,22 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Payment");
         view_button6.setOnClickListener(new DeleteElementButtonListener());
+    }
+
+    public void addBusinessMember() {
+        elementPicker = new ElementPickerDialog("member", ElementDetailActivity.this);
+        elementPicker.pickElement();
+    }
+
+    public void addToBusiness() {
+        String element_id = elementPicker.getID();
+        // String element_display = elementPicker.getDisplay();
+        QUERY_ARGS = new HashMap<>();
+        QUERY_ARGS.put("business_id", business_id);
+        QUERY_ARGS.put("form_type", "MemberHasBusiness");
+        QUERY_ARGS.put("member_id", element_id);
+        Log.d("QUERY_ARGS: ", QUERY_ARGS.toString());
+        new FormPoster().execute();
     }
 
     class ListElementsButtonListener implements View.OnClickListener {
