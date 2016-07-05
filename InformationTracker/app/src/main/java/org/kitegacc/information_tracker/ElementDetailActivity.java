@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 
 public class ElementDetailActivity extends AppCompatActivity {
 
@@ -355,21 +356,19 @@ public class ElementDetailActivity extends AppCompatActivity {
         builder.setTitle("View Meeting Items ...");
         builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-
                 switch(item)
                 {
                     case 0:
-                        new ListElementsButtonListener("meeting_members");
+                        new ListElementsButtonListener("meeting_members").doClick();
                         break;
                     case 1:
-                        new ListElementsButtonListener("meeting_loans");
+                        new ListElementsButtonListener("meeting_loans").doClick();
                         break;
                     case 2:
-                        new ListElementsButtonListener("meeting_businesses");
+                        new ListElementsButtonListener("meeting_businesses").doClick();
                         break;
                     default:
                         break;
-
                 }
                 dialog.dismiss();
             }
@@ -536,6 +535,10 @@ public class ElementDetailActivity extends AppCompatActivity {
         private String function;
         public ListElementsButtonListener(String function) {
             this.function = function;
+        }
+
+        public void doClick() {
+            onClick(new View(getApplicationContext()));
         }
 
         @Override

@@ -229,7 +229,7 @@ public class ListElementsActivity extends ListActivity {
                 case "members":
                     return jObj.getString("name");
                 case "meetings":
-                    return jObj.getString("date_time");
+                    return jObj.getString("date_time") + ", " + jObj.getString("meeting_time");
                 case "loans":
                     String award_date = jObj.getString("award_date");
                     String amount = jObj.getString("amount");
