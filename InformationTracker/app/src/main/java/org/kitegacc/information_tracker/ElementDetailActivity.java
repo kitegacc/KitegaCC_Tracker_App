@@ -473,6 +473,32 @@ public class ElementDetailActivity extends AppCompatActivity {
         String mid_display_text4 = "Amount Paid: " + actual_amount;
         view_display4.setText(mid_display_text4);
 
+        view_button3 = (Button) findViewById(R.id.detail_page_button3);
+        view_button3.setVisibility(View.VISIBLE);
+        view_button3.setText("View Loan");
+        view_button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ElementDetailActivity.class);
+                intent.putExtra("loan_id", loan_id);
+                intent.putExtra("view_type", "loan");
+                startActivity(intent);
+            }
+        });
+
+        view_button4 = (Button) findViewById(R.id.detail_page_button4);
+        view_button4.setVisibility(View.VISIBLE);
+        view_button4.setText("View Paying Member");
+        view_button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ElementDetailActivity.class);
+                intent.putExtra("member_id", member_id);
+                intent.putExtra("view_type", "member");
+                startActivity(intent);
+            }
+        });
+
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
         view_button5.setText("Edit Payment");
