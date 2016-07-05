@@ -179,6 +179,7 @@ public class ElementDetailActivity extends AppCompatActivity {
 
     public String meeting_id = "";
     public String date_time = "";
+    public String meeting_time = "";
     public String business_summary = "";
     public String meeting_summary = "";
 
@@ -188,6 +189,7 @@ public class ElementDetailActivity extends AppCompatActivity {
             meeting_id = json.getString("meeting_id");
             community_id = json.getString("community_id");
             date_time = json.getString("date_time");
+            meeting_time = json.getString("meeting_time");
             business_summary = json.getString("business_summary");
             meeting_summary = json.getString("meeting_summary");
         } catch (JSONException e) {
@@ -201,13 +203,18 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         view_display2 = (TextView) findViewById(R.id.detail_page_field2);
         view_display2.setVisibility(View.VISIBLE);
-        String mid_display_text2 = "Meeting Summary: " + meeting_summary;
+        String mid_display_text2 = "Time: " + meeting_time;
         view_display2.setText(mid_display_text2);
 
         view_display3 = (TextView) findViewById(R.id.detail_page_field3);
         view_display3.setVisibility(View.VISIBLE);
-        String mid_display_text3 = "Business Summary: " + business_summary;
+        String mid_display_text3 = "Meeting Summary: " + meeting_summary;
         view_display3.setText(mid_display_text3);
+
+        view_display4 = (TextView) findViewById(R.id.detail_page_field4);
+        view_display4.setVisibility(View.VISIBLE);
+        String mid_display_text4 = "Business Summary: " + business_summary;
+        view_display4.setText(mid_display_text4);
 
         view_button2 = (Button) findViewById(R.id.detail_page_button2);
         view_button2.setVisibility(View.VISIBLE);

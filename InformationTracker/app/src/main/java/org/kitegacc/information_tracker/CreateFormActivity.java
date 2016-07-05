@@ -179,7 +179,7 @@ public class CreateFormActivity extends AppCompatActivity {
 
     public void createMeetingForm(Bundle bundle) {
         COMMUNITY_ID = bundle.getString("community_id");
-        NUM_FIELDS = 3;
+        NUM_FIELDS = 4;
         QUERY_ARGS.put("form_type", "meeting");
         QUERY_ARGS.put("community_id", COMMUNITY_ID);
         setTitle("Create Meeting");
@@ -209,16 +209,21 @@ public class CreateFormActivity extends AppCompatActivity {
         });
 
         INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_2.setHint("Business Summary");
+        INPUT_LAYOUT_2.setHint("Time");
         FORM_FIELD_2.setVisibility(View.VISIBLE);
-        FORM_FIELD_2.setHint("Business Summary");
-        FORM_FIELD_2.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+        FORM_FIELD_2.setHint("Time");
 
         INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
-        INPUT_LAYOUT_3.setHint("Meeting Summary");
+        INPUT_LAYOUT_3.setHint("Business Summary");
         FORM_FIELD_3.setVisibility(View.VISIBLE);
-        FORM_FIELD_3.setHint("Meeting Summary");
+        FORM_FIELD_3.setHint("Business Summary");
         FORM_FIELD_3.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+
+        INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
+        INPUT_LAYOUT_4.setHint("Meeting Summary");
+        FORM_FIELD_4.setVisibility(View.VISIBLE);
+        FORM_FIELD_4.setHint("Meeting Summary");
+        FORM_FIELD_4.setInputType(InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
     }
 
     public void createLoanForm(Bundle bundle) {
@@ -391,8 +396,9 @@ public class CreateFormActivity extends AppCompatActivity {
 
     public void submitCreateMeetingForm() {
         QUERY_ARGS.put("date_time", FORM_FIELD_1.getText().toString());
-        QUERY_ARGS.put("business_summary", FORM_FIELD_2.getText().toString());
-        QUERY_ARGS.put("meeting_summary", FORM_FIELD_3.getText().toString());
+        QUERY_ARGS.put("meeting_time", FORM_FIELD_2.getText().toString());
+        QUERY_ARGS.put("business_summary", FORM_FIELD_3.getText().toString());
+        QUERY_ARGS.put("meeting_summary", FORM_FIELD_4.getText().toString());
         new FormPoster().execute();
     }
 
