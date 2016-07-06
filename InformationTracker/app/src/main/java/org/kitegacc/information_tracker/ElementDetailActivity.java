@@ -183,7 +183,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Member");
-        view_button6.setOnClickListener(new DeleteElementButtonListener());
+        view_button6.setOnClickListener(new DeleteElementButtonListener("member", member_id));
     }
 
     public String meeting_id = "";
@@ -263,7 +263,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Meeting");
-        view_button6.setOnClickListener(new DeleteElementButtonListener());
+        view_button6.setOnClickListener(new DeleteElementButtonListener("meeting", meeting_id));
     }
 
     public void removeMeetingItems() {
@@ -440,7 +440,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Loan");
-        view_button6.setOnClickListener(new DeleteElementButtonListener());
+        view_button6.setOnClickListener(new DeleteElementButtonListener("loan", loan_id));
     }
 
     public String payment_id = "";
@@ -515,7 +515,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Payment");
-        view_button6.setOnClickListener(new DeleteElementButtonListener());
+        view_button6.setOnClickListener(new DeleteElementButtonListener("payment", payment_id));
     }
 
     public String business_id = "";
@@ -572,7 +572,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Business");
-        view_button6.setOnClickListener(new DeleteElementButtonListener());
+        view_button6.setOnClickListener(new DeleteElementButtonListener("business", business_id));
     }
 
     public void addBusinessMember() {
@@ -715,13 +715,31 @@ public class ElementDetailActivity extends AppCompatActivity {
     }
 
     class DeleteElementButtonListener implements View.OnClickListener {
-        public DeleteElementButtonListener() {
 
+        private String elementType = "";
+        private String elementID = "";
+
+        public DeleteElementButtonListener(String elementType, String elementID) {
+            this.elementType = elementType;
+            this.elementID = elementID;
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(ElementDetailActivity.this, "Delete Element", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(ElementDetailActivity.this)
+                    .setTitle("Confirm Delete")
+                    .setMessage("Do you really want to delete this " + elementType + "?")
+                    .setIcon(android.R.drawable.ic_menu_delete)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            doDelete();
+                        }})
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+
+        public void doDelete() {
+            Toast.makeText(ElementDetailActivity.this, "Delete" + elementType, Toast.LENGTH_LONG).show();
         }
     }
 
