@@ -39,7 +39,12 @@
             android:name=".ElementDetailActivity"
             android:label="@string/title_activity_member_detail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CreateFormActivity"></activity>
+        <activity
+            android:name=".CreateFormActivity"
+            android:label="Create Form" />
+        <activity
+            android:name=".UpdateFormActivity"
+            android:label="Update Form" />
     </application>
 
 </manifest>

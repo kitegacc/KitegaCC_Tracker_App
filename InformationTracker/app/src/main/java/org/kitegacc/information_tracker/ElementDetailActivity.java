@@ -87,6 +87,11 @@ public class ElementDetailActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 9876) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
         if (resultCode == RESULT_OK) {
             elementPicker.setID(data.getExtras().getString("element_id"));
             elementPicker.setDisplay(data.getExtras().getString("element_display"));
@@ -173,7 +178,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
         view_button5.setText("Edit Member");
-        view_button5.setOnClickListener(new EditElementButtonListener());
+        view_button5.setOnClickListener(new EditElementButtonListener("member"));
 
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
@@ -253,7 +258,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
         view_button5.setText("Edit Meeting");
-        view_button5.setOnClickListener(new EditElementButtonListener());
+        view_button5.setOnClickListener(new EditElementButtonListener("meeting"));
 
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
@@ -430,7 +435,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
         view_button5.setText("Edit Loan");
-        view_button5.setOnClickListener(new EditElementButtonListener());
+        view_button5.setOnClickListener(new EditElementButtonListener("loan"));
 
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
@@ -456,10 +461,10 @@ public class ElementDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        view_display1 = (TextView) findViewById(R.id.detail_page_field1);
-        view_display1.setVisibility(View.VISIBLE);
-        String mid_display_text1 = "member_id: " + "member name!!!!!!!!";
-        view_display1.setText(mid_display_text1);
+        // view_display1 = (TextView) findViewById(R.id.detail_page_field1);
+        // view_display1.setVisibility(View.VISIBLE);
+        // String mid_display_text1 = "member_id: " + "member name!!!!!!!!";
+        // view_display1.setText(mid_display_text1);
 
         view_display2 = (TextView) findViewById(R.id.detail_page_field2);
         view_display2.setVisibility(View.VISIBLE);
@@ -505,7 +510,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
         view_button5.setText("Edit Payment");
-        view_button5.setOnClickListener(new EditElementButtonListener());
+        view_button5.setOnClickListener(new EditElementButtonListener("payment"));
 
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
@@ -561,12 +566,12 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         view_button5 = (Button) findViewById(R.id.detail_page_button5);
         view_button5.setVisibility(View.VISIBLE);
-        view_button5.setText("Edit Payment");
-        view_button5.setOnClickListener(new EditElementButtonListener());
+        view_button5.setText("Edit Business");
+        view_button5.setOnClickListener(new EditElementButtonListener("business"));
 
         view_button6 = (Button) findViewById(R.id.detail_page_button6);
         view_button6.setVisibility(View.VISIBLE);
-        view_button6.setText("Delete Payment");
+        view_button6.setText("Delete Business");
         view_button6.setOnClickListener(new DeleteElementButtonListener());
     }
 
@@ -646,13 +651,66 @@ public class ElementDetailActivity extends AppCompatActivity {
     }
 
     class EditElementButtonListener implements View.OnClickListener {
-        public EditElementButtonListener() {
 
+        private String element_type;
+
+        public EditElementButtonListener(String element_type) {
+            this.element_type = element_type;
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(ElementDetailActivity.this, "Edit Element", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(ElementDetailActivity.this, UpdateFormActivity.class);
+            intent.putExtra("form", element_type);
+            switch(element_type) {
+                case "community":
+                    break;
+                case "member":
+                    intent.putExtra("member_id", member_id);
+                    intent.putExtra("name", name);
+                    intent.putExtra("age", age);
+                    intent.putExtra("emergency_contact", emergency_contact);
+                    intent.putExtra("residence", residence);
+                    intent.putExtra("kin_or_spouse", kin_or_spouse);
+                    intent.putExtra("community_id", community_id);
+                    break;
+                case "meeting":
+                    intent.putExtra("meeting_id", meeting_id);
+                    intent.putExtra("community_id", community_id);
+                    intent.putExtra("date_time", date_time);
+                    intent.putExtra("meeting_time", meeting_time);
+                    intent.putExtra("business_summary", business_summary);
+                    intent.putExtra("meeting_summary", meeting_summary);
+                    break;
+                case "loan":
+                    intent.putExtra("loan_id", loan_id);
+                    intent.putExtra("community_id", community_id);
+                    intent.putExtra("award_date", award_date);
+                    intent.putExtra("amount", amount);
+                    intent.putExtra("balance", balance);
+                    break;
+                case "payment":
+                    intent.putExtra("payment_id", payment_id);
+                    intent.putExtra("loan_id", loan_id);
+                    intent.putExtra("member_id", member_id);
+                    intent.putExtra("payment_date", payment_date);
+                    intent.putExtra("expected_amount", expected_amount);
+                    intent.putExtra("actual_amount", actual_amount);
+                    break;
+                case "business":
+                    intent.putExtra("business_id", business_id);
+                    intent.putExtra("community_id", community_id);
+                    intent.putExtra("meeting_id", meeting_id);
+                    intent.putExtra("name", name);
+                    intent.putExtra("business_summary", business_summary);
+                    intent.putExtra("business_status", business_status);
+                    break;
+                default:
+                    break;
+            }
+            Log.d("Intent Extras: ", intent.getExtras().toString());
+            startActivityForResult(intent, 9876);
+            // Toast.makeText(ElementDetailActivity.this, "Edit Element", Toast.LENGTH_LONG).show();
         }
     }
 
