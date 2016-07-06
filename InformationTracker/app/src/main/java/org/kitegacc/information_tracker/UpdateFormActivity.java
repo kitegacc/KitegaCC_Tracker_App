@@ -68,7 +68,7 @@ public class UpdateFormActivity extends AppCompatActivity {
 
         switch (FORM_TYPE) {
             case "community":
-                updateCommunityAccountForm();
+                updateCommunityAccountForm(bundle);
                 break;
             case "member":
                 updateMemberForm(bundle);
@@ -109,37 +109,43 @@ public class UpdateFormActivity extends AppCompatActivity {
         INPUT_LAYOUT_7 = (TextInputLayout) findViewById(R.id.create_input_layout_7);
     }
 
-    public void updateCommunityAccountForm() {
+    public void updateCommunityAccountForm(Bundle bundle) {
         NUM_FIELDS = 5;
         QUERY_ARGS.put("form_type", "community");
+        QUERY_ARGS.put("community_id", bundle.getString("community_id"));
         setTitle("Update Community Account");
 
         INPUT_LAYOUT_1.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_1.setHint("Location");
         FORM_FIELD_1.setVisibility(View.VISIBLE);
         FORM_FIELD_1.setHint("Location");
+        FORM_FIELD_1.setText(bundle.getString("location"));
 
         INPUT_LAYOUT_2.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_2.setHint("Community Cash Balance");
         FORM_FIELD_2.setVisibility(View.VISIBLE);
         FORM_FIELD_2.setHint("Community Cash Balance");
         FORM_FIELD_2.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        FORM_FIELD_2.setText(bundle.getString("com_balance"));
 
         INPUT_LAYOUT_3.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_3.setHint("Vicoba Balance");
         FORM_FIELD_3.setVisibility(View.VISIBLE);
         FORM_FIELD_3.setHint("Vicoba Balance");
         FORM_FIELD_3.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        FORM_FIELD_3.setText(bundle.getString("vicoba_balance"));
 
         INPUT_LAYOUT_4.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_4.setHint("Username");
         FORM_FIELD_4.setVisibility(View.VISIBLE);
         FORM_FIELD_4.setHint("Username");
+        FORM_FIELD_4.setText(bundle.getString("username"));
 
         INPUT_LAYOUT_5.setVisibility(View.VISIBLE);
         INPUT_LAYOUT_5.setHint("Password");
         FORM_FIELD_5.setVisibility(View.VISIBLE);
         FORM_FIELD_5.setHint("Password");
+        FORM_FIELD_5.setText(bundle.getString("password"));
     }
 
     public void updateMemberForm(Bundle bundle) {

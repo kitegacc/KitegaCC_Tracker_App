@@ -16,6 +16,7 @@ public class CommunityHomePage extends AppCompatActivity {
 
     public static int COMMUNITY_ID = -1;
     public String USERNAME = "";
+    public String PASSWORD = "";
     public String LOCATION = "";
     public String COM_BALANCE = "";
     public String VICOBA_BALANCE = "";
@@ -30,6 +31,7 @@ public class CommunityHomePage extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             COMMUNITY_ID = Integer.parseInt(extras.getString("community_id"));
             USERNAME = extras.getString("username");
+            PASSWORD = extras.getString("password");
             LOCATION = extras.getString("location");
             COM_BALANCE = extras.getString("com_balance");
             VICOBA_BALANCE = extras.getString("vicoba_balance");
@@ -73,11 +75,33 @@ public class CommunityHomePage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        if(id == R.id.action_edit_community) {
+            Intent intent = new Intent(CommunityHomePage.this, UpdateFormActivity.class);
+            intent.putExtra("form", "community");
+            intent.putExtra("community_id", Integer.toString(COMMUNITY_ID));
+            intent.putExtra("username", USERNAME);
+            intent.putExtra("password", PASSWORD);
+            intent.putExtra("location", LOCATION);
+            intent.putExtra("com_balance", COM_BALANCE);
+            intent.putExtra("vicoba_balance", VICOBA_BALANCE);
+            startActivityForResult(intent, 555);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 555) {
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
     }
 
     @Override

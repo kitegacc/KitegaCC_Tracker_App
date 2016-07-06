@@ -31,6 +31,7 @@ public class ElementDetailActivity extends AppCompatActivity {
     private String ELEMENT_ID = "";
     private String VIEW_ELEMENT_URL = "http://androidapp.kitegacc.org/view_element.php";
     private static String url_create_element = "http://androidapp.kitegacc.org/create_element.php";
+    private static String url_delete_element = "http://androidapp.kitegacc.org/delete_element.php";
     private TextView view_display1;
     private TextView view_display2;
     private TextView view_display3;
@@ -739,7 +740,16 @@ public class ElementDetailActivity extends AppCompatActivity {
         }
 
         public void doDelete() {
-            Toast.makeText(ElementDetailActivity.this, "Delete" + elementType, Toast.LENGTH_LONG).show();
+            // Toast.makeText(ElementDetailActivity.this, "Delete" + elementType, Toast.LENGTH_LONG).show();
+            QUERY_ARGS = new HashMap<>();
+            QUERY_ARGS.put("form_type", elementType);
+            QUERY_ARGS.put("security_key", "E92FC684-612B-45A9-B55F-F79E75BAF60B");
+            QUERY_ARGS.put("elementID", elementID);
+            FormPoster deleteElement = new FormPoster();
+            deleteElement.request_url = url_delete_element;
+            deleteElement.action = "Deleting";
+            deleteElement.execute();
+            finish();
         }
     }
 
@@ -868,6 +878,8 @@ public class ElementDetailActivity extends AppCompatActivity {
     class FormPoster extends AsyncTask<Void, Void, Boolean> {
 
         private ProgressDialog pDialog;
+        public String request_url = url_create_element;
+        public String action = "Adding";
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -876,7 +888,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(ElementDetailActivity.this);
-            pDialog.setMessage("Adding Item. Please wait...");
+            pDialog.setMessage(action + " Item. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -891,7 +903,7 @@ public class ElementDetailActivity extends AppCompatActivity {
 //            HashMap<String, String> params = new HashMap<>();
 //            params.put("community_id", Integer.toString(COMMUNITY_ID));
 //            // getting JSON string from URL
-            JSONObject json = jphtr.makeHttpRequest(url_create_element, "GET", QUERY_ARGS);
+            JSONObject json = jphtr.makeHttpRequest(request_url, "GET", QUERY_ARGS);
 
             // Check your log cat for JSON response
             Log.d("All Products: ", json.toString());
