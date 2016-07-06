@@ -49,6 +49,7 @@
 
     <!--  Button to create a new item -->
     <Button android:id="@+id/btnCreateNewElement"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Create New Item"
@@ -58,6 +59,7 @@
 
     <!--  Button to view all businesses screen -->
     <Button android:id="@+id/btnViewBusinesses"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="View All Community Businesses"
@@ -67,6 +69,7 @@
 
     <!--  Button to view all loans screen -->
     <Button android:id="@+id/btnViewLoans"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="View All Community Loans"
@@ -76,6 +79,7 @@
 
     <!--  Button to view all members screen -->
     <Button android:id="@+id/btnViewMembers"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="View All Community Members"
@@ -85,6 +89,7 @@
 
     <!--  Button to view all meetings screen -->
     <Button android:id="@+id/btnViewMeetings"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="View All Community Meetings"

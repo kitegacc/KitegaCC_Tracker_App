@@ -52,6 +52,7 @@
         android:layout_below="@id/detail_page_field4"/>
 
     <Button android:id="@+id/detail_page_button6"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 6"
@@ -60,6 +61,7 @@
         android:layout_alignParentBottom="true"/>
 
     <Button android:id="@+id/detail_page_button5"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 5"
@@ -68,6 +70,7 @@
         android:layout_above="@id/detail_page_button6"/>
 
     <Button android:id="@+id/detail_page_button4"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 4"
@@ -76,6 +79,7 @@
         android:layout_above="@id/detail_page_button5"/>
 
     <Button android:id="@+id/detail_page_button3"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 3"
@@ -84,6 +88,7 @@
         android:layout_above="@id/detail_page_button4"/>
 
     <Button android:id="@+id/detail_page_button2"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 2"
@@ -92,6 +97,7 @@
         android:layout_above="@id/detail_page_button3"/>
 
     <Button android:id="@+id/detail_page_button1"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Button 1"
