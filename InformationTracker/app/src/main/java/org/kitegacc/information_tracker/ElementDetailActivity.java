@@ -371,9 +371,9 @@ public class ElementDetailActivity extends AppCompatActivity {
                 removeElement.doDelete();
                 break;
             case "meeting_businesses":
-                // Toast.makeText(ElementDetailActivity.this, elementPicker.getID() + ": " + elementPicker.getDisplay(), Toast.LENGTH_LONG).show();
-                // removeElement = new DeleteElementButtonListener("MemberHasMeeting", elementPicker.getID());
-                // removeElement.doDelete();
+                QUERY_ARGS.put("form_type", "MeetingHasBusiness");
+                QUERY_ARGS.put("meeting_id", Integer.toString(-1));
+                QUERY_ARGS.put("business_id", element_id);
                 break;
             default:
                 break;
@@ -778,7 +778,9 @@ public class ElementDetailActivity extends AppCompatActivity {
             deleteElement.request_url = url_delete_element;
             deleteElement.action = "Deleting";
             deleteElement.execute();
-            finish();
+            if(elementID2.equals("")) {
+                finish();
+            }
         }
     }
 
