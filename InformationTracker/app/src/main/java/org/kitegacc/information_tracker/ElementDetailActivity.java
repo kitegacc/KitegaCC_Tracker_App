@@ -47,6 +47,7 @@ public class ElementDetailActivity extends AppCompatActivity {
     JSONParserHTTPRequest jphtr = new JSONParserHTTPRequest();
     public HashMap<String, String> QUERY_ARGS;
     public String elementType = "";
+    public static String BASE_MEETING_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,21 +278,28 @@ public class ElementDetailActivity extends AppCompatActivity {
         builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
 
+                BASE_MEETING_ID = meeting_id;
+                elementType = "";
                 switch(item)
                 {
                     case 0:
-                        new ListElementsButtonListener("meeting_members");
+                        elementType = "meeting_members";
+                        // new ListElementsButtonListener("meeting_members");
                         break;
                     case 1:
-                        new ListElementsButtonListener("meeting_loans");
+                        elementType = "meeting_loans";
+                        // new ListElementsButtonListener("meeting_loans");
                         break;
                     case 2:
-                        new ListElementsButtonListener("meeting_businesses");
+                        elementType = "meeting_businesses";
+                        // new ListElementsButtonListener("meeting_businesses");
                         break;
                     default:
                         break;
 
                 }
+                elementPicker = new ElementPickerDialog(elementType, ElementDetailActivity.this);
+                elementPicker.pickElement();
                 dialog.dismiss();
             }
         });
@@ -336,6 +344,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         // String element_display = elementPicker.getDisplay();
         QUERY_ARGS = new HashMap<>();
         QUERY_ARGS.put("meeting_id", meeting_id);
+        DeleteElementButtonListener removeElement;
         switch (elementType) {
             case "member":
                 QUERY_ARGS.put("form_type", "MemberHasMeeting");
@@ -349,9 +358,27 @@ public class ElementDetailActivity extends AppCompatActivity {
                 QUERY_ARGS.put("form_type", "MeetingHasBusiness");
                 QUERY_ARGS.put("business_id", element_id);
                 break;
+            case "meeting_members":
+                // Toast.makeText(ElementDetailActivity.this, elementPicker.getID() + ": " + elementPicker.getDisplay(), Toast.LENGTH_LONG).show();
+                removeElement = new DeleteElementButtonListener("MemberHasMeeting", elementPicker.getID());
+                removeElement.elementID2 = meeting_id;
+                removeElement.doDelete();
+                break;
+            case "meeting_loans":
+                // Toast.makeText(ElementDetailActivity.this, elementPicker.getID() + ": " + elementPicker.getDisplay(), Toast.LENGTH_LONG).show();
+                removeElement = new DeleteElementButtonListener("LoanAwardedMeeting", elementPicker.getID());
+                removeElement.elementID2 = meeting_id;
+                removeElement.doDelete();
+                break;
+            case "meeting_businesses":
+                // Toast.makeText(ElementDetailActivity.this, elementPicker.getID() + ": " + elementPicker.getDisplay(), Toast.LENGTH_LONG).show();
+                // removeElement = new DeleteElementButtonListener("MemberHasMeeting", elementPicker.getID());
+                // removeElement.doDelete();
+                break;
             default:
                 break;
         }
+
         Log.d("QUERY_ARGS: ", QUERY_ARGS.toString());
         new FormPoster().execute();
     }
@@ -719,6 +746,7 @@ public class ElementDetailActivity extends AppCompatActivity {
 
         private String elementType = "";
         private String elementID = "";
+        public String elementID2 = "";
 
         public DeleteElementButtonListener(String elementType, String elementID) {
             this.elementType = elementType;
@@ -745,6 +773,7 @@ public class ElementDetailActivity extends AppCompatActivity {
             QUERY_ARGS.put("form_type", elementType);
             QUERY_ARGS.put("security_key", "E92FC684-612B-45A9-B55F-F79E75BAF60B");
             QUERY_ARGS.put("elementID", elementID);
+            QUERY_ARGS.put("elementID2", elementID2);
             FormPoster deleteElement = new FormPoster();
             deleteElement.request_url = url_delete_element;
             deleteElement.action = "Deleting";

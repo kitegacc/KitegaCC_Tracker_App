@@ -51,6 +51,21 @@ public class ElementPickerDialog {
             intent.putExtra("CLICK_ACTION", "RETURN_ELEMENT");
             intent.putExtra("base_id", CommunityHomePage.GLOBAL_COMMUNITY_ID);
         }
+        if(elementType.equals("meeting_members")) {
+            intent.putExtra("LIST_TYPE", "meeting_members"); // other will be "SELECT_MEMBER"
+            intent.putExtra("CLICK_ACTION", "RETURN_ELEMENT");
+            intent.putExtra("base_id", ElementDetailActivity.BASE_MEETING_ID);
+        }
+        if(elementType.equals("meeting_loans")) {
+            intent.putExtra("LIST_TYPE", "meeting_loans"); // other will be "SELECT_MEMBER"
+            intent.putExtra("CLICK_ACTION", "RETURN_ELEMENT");
+            intent.putExtra("base_id", ElementDetailActivity.BASE_MEETING_ID);
+        }
+        if(elementType.equals("meeting_businesses")) {
+            intent.putExtra("LIST_TYPE", "meeting_businesses"); // other will be "SELECT_MEMBER"
+            intent.putExtra("CLICK_ACTION", "RETURN_ELEMENT");
+            intent.putExtra("base_id", ElementDetailActivity.BASE_MEETING_ID);
+        }
         activity.startActivityForResult(intent, 100);
     }
 }
