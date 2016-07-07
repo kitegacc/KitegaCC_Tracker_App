@@ -268,7 +268,7 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setOnClickListener(new DeleteElementButtonListener("meeting", meeting_id));
 
         Button photo_button = (Button) findViewById(R.id.meeting_photo_button);
-        photo_button.setVisibility(View.VISIBLE);
+        // photo_button.setVisibility(View.VISIBLE);
         photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
     <Button
@@ -25,21 +25,12 @@
         android:text="Upload Photo" />
 
     <Button
-        android:id="@+id/choose_photo_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/upload_photo_button"
-        android:text="Choose Photo" />
-
-    <Button
         android:id="@+id/take_photo_button"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/choose_photo_button"
+        android:layout_above="@id/upload_photo_button"
         android:text="Take Photo" />
 
 </RelativeLayout>
