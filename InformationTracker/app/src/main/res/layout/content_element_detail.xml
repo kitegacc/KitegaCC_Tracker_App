@@ -105,4 +105,13 @@
         android:layout_marginTop="10dip"
         android:layout_above="@id/detail_page_button2"/>
 
+    <Button android:id="@+id/meeting_photo_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Meeting Photo"
+        android:visibility="gone"
+        android:layout_marginTop="10dip"
+        android:layout_above="@id/detail_page_button1"/>
+
 </RelativeLayout>

@@ -266,6 +266,49 @@ public class ElementDetailActivity extends AppCompatActivity {
         view_button6.setVisibility(View.VISIBLE);
         view_button6.setText("Delete Meeting");
         view_button6.setOnClickListener(new DeleteElementButtonListener("meeting", meeting_id));
+
+        Button photo_button = (Button) findViewById(R.id.meeting_photo_button);
+        photo_button.setVisibility(View.VISIBLE);
+        photo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photo_button_clicked();
+            }
+        });
+    }
+
+    public void photo_button_clicked() {
+        final AlertDialog levelDialog;
+        final CharSequence[] items = {" Set Meeting Photo "," View Meeting Photo "};
+
+        // Creating and Building the Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Meeting Photo Options ...");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+
+                switch(item)
+                {
+                    case 0:
+                        Intent intent = new Intent(ElementDetailActivity.this, AddMeetingPhotoActivity.class);
+                        intent.putExtra("meeting_id", meeting_id);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        // Intent intent = new Intent(ElementDetailActivity.this, ViewMeetingPhotoActivity.class);
+                        // intent.putExtra("meeting_id", meeting_id);
+                        break;
+                    default:
+                        break;
+
+                }
+                // elementPicker = new ElementPickerDialog(elementType, ElementDetailActivity.this);
+                // elementPicker.pickElement();
+                dialog.dismiss();
+            }
+        });
+        levelDialog = builder.create();
+        levelDialog.show();
     }
 
     public void removeMeetingItems() {
